@@ -1,0 +1,15 @@
+{
+    "name": "quan/quan_ly_cung_duong",
+    "description": "ung dung quan ly cung duong",
+    "require": {
+        "slim/slim": "^3.4",
+        "monolog/monolog": "^1.19"
+    },
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "QuanNA",
+            "email": "naquan2112@gmail.com"
+        }
+    ]
+}
