@@ -3,7 +3,8 @@
     "description": "ung dung quan ly cung duong",
     "require": {
         "slim/slim": "^3.4",
-        "monolog/monolog": "^1.19"
+        "monolog/monolog": "^1.19",
+        "slim/pdo": "^1.9"
     },
     "license": "GPL",
     "authors": [

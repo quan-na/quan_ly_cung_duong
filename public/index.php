@@ -6,15 +6,9 @@ require '../vendor/autoload.php';
 spl_autoload_register(function ($classname) {
     require ("../classes/" . $classname . ".php");
 });
+$config = require 'config.php';
 
-$config['displayErrorDetails'] = true;
-
-$config['db']['host']   = "localhost";
-$config['db']['user']   = "user";
-$config['db']['pass']   = "password";
-$config['db']['dbname'] = "exampleapp";
-
-$app = new \Slim\App(["settings" => $config]);
+$app = new \Slim\App($config);
 $container = $app->getContainer();
 
 $container['logger'] = function($c) {
@@ -31,5 +25,6 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 
     return $response;
 });
+
 $app->run();
 ?>
