@@ -4,7 +4,8 @@
     "require": {
         "slim/slim": "^3.4",
         "monolog/monolog": "^1.19",
-        "slim/pdo": "^1.9"
+        "slim/pdo": "^1.9",
+        "dflydev/fig-cookies": "^1.0"
     },
     "license": "GPL",
     "authors": [
