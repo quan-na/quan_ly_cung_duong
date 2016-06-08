@@ -1,26 +1,81 @@
 <html>
     <head>
+        <meta charset="utf-8">
         <title>H&#7884;C VI&#7878;N PH&#7852;T GI&#193;O VI&#7878;T NAM C&#416; S&#7902; L&#202; MINH XU&#194;N</title>
         <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
         <script src="/js/jquery.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/js.cookie.js"></script>
+        <script src="/js/jquery-lang.js"></script>
+        <style>
+         body {
+             padding-top: 40px;
+             padding-bottom: 40px;
+             background-color: #eee;
+         }
+
+         .form-signin {
+             max-width: 330px;
+             padding: 15px;
+             margin: 0 auto;
+         }
+         .form-signin .form-signin-heading,
+         .form-signin .checkbox {
+             margin-bottom: 10px;
+         }
+         .form-signin .checkbox {
+             font-weight: normal;
+         }
+         .form-signin .form-control {
+             position: relative;
+             height: auto;
+             -webkit-box-sizing: border-box;
+             -moz-box-sizing: border-box;
+             box-sizing: border-box;
+             padding: 10px;
+             font-size: 16px;
+         }
+         .form-signin .form-control:focus {
+             z-index: 2;
+         }
+         .form-signin input[type="email"] {
+             margin-bottom: -1px;
+             border-bottom-right-radius: 0;
+             border-bottom-left-radius: 0;
+         }
+         .form-signin input[type="password"] {
+             margin-bottom: 10px;
+             border-top-left-radius: 0;
+             border-top-right-radius: 0;
+         }
+        </style>
+        <script type="text/javascript">
+         // Create language switcher instance
+         var lang = new Lang();
+         lang.dynamic('vi', '/langs/vi.json');
+         lang.init({
+             defaultLang: 'en',
+             currentLang: 'vi'
+         });
+        </script>
     </head>
     <body>
         <div class="container">
             <form class="form-signin">
-                <h2 class="form-signin-heading">Please sign in</h2>
-                <label for="inputEmail" class="sr-only">Email address</label>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <h2 class="form-signin-heading" lang="en">Please sign in</h2>
+                <label for="inputUsername" lang="en" class="sr-only">Username</label>
+                <input type="text" id="inputUsername" lang="en" class="form-control" placeholder="Username" required autofocus>
+                <label for="inputPassword" lang="en" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" lang="en" class="form-control" placeholder="Password" required>
                 <div class="checkbox">
-                    <label>
-                        <input type="checkbox" value="remember-me"> Remember me
+                    <label lang="en">
+                    <input type="checkbox" value="remember-me">Remember me
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <button class="btn btn-lg btn-primary btn-block" lang="en" type="button">Sign in</button>
             </form>
         </div>
     </body>
