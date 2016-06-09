@@ -21,20 +21,24 @@ $container['logger'] = function($c) {
 
 $container['db'] = function ($c) {
     $db = $c['settings']['db'];
-    $pdo = new PDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'],
-                   $db['user'], $db['pass']);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $pdo = new \Slim\PDO\Database("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'] . ';charset=utf8',
+                   $db['user'], $db['password']);
+    // TODO when default options is not enough, change this
     return $pdo;
 };
 
 $app->add(function ($request, $response, $next) {
     $this->logger->addInfo(">>> authentication interception");
-    if ('/' != $request->getRequestTarget() && NULL == (new UamController($this))->getLoggedInUsername($request, $response)) { 
+    ini_set('session.gc_maxlifetime', 172800);
+    session_set_cookie_params(172800);
+    session_cache_limiter(false);
+    session_start();
+    if (!in_array($request->getRequestTarget(), array('/', '/authenticate'))
+        && NULL == (new UamController($this))->getLoggedInUsername($request, $response)) { 
 	      // TODO return error json
         $this->logger->addInfo("!!! not logged in");
+        $response = $response->withStatus(403, 'Not authenticated.');
     } else {
-        $this->logger->addInfo("--- logged in");
         $response = $next($request, $response);
     }
     $this->logger->addInfo("<<< authentication interception");
@@ -55,7 +59,11 @@ $app->get('/', function (Request $request, Response $response) {
 });
 
 $app->post('/authenticate', function (Request $request, Response $response) {
-    return (new UamController(this))->authenticate($request, $response);
+    return (new UamController($this))->authenticate($request, $response);
+});
+
+$app->post('/logout', function (Request $request, Response $response) {
+    return UamController::logout();
 });
 
 $app->run();

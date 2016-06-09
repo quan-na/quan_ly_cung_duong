@@ -10,6 +10,8 @@
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/js.cookie.js"></script>
         <script src="/js/jquery-lang.js"></script>
+        <script src="/js/jquery.serializeObject.min.js"></script>
+        <script src="/js/qlcd-common.js"></script>
         <style>
          body {
              padding-top: 40px;
@@ -52,31 +54,56 @@
              border-top-right-radius: 0;
          }
         </style>
-        <script type="text/javascript">
-         // Create language switcher instance
-         var lang = new Lang();
-         lang.dynamic('vi', '/langs/vi.json');
-         lang.init({
-             defaultLang: 'en',
-             currentLang: 'vi'
-         });
-        </script>
     </head>
     <body>
         <div class="container">
             <form class="form-signin">
                 <h2 class="form-signin-heading" lang="en">Please sign in</h2>
                 <label for="inputUsername" lang="en" class="sr-only">Username</label>
-                <input type="text" id="inputUsername" lang="en" class="form-control" placeholder="Username" autofocus>
+                <input type="text" id="inputUsername" name="username" lang="en" class="form-control" placeholder="Username" autofocus>
                 <label for="inputPassword" lang="en" class="sr-only">Password</label>
-                <input type="password" id="inputPassword" lang="en" class="form-control" placeholder="Password">
+                <input type="password" id="inputPassword" name="password" lang="en" class="form-control" placeholder="Password">
                 <div class="checkbox">
                     <label lang="en">
-                    <input type="checkbox" value="remember-me">Remember me
+                        <input type="checkbox" name="rememberMe" value="yes">Remember me
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" lang="en" type="button">Sign in</button>
+                <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block" lang="en" type="button">Sign in</button>
             </form>
         </div>
+        <script type="text/javascript">
+         var clientControl = (function () {
+             var _this = {};
+
+             // Create language switcher instance
+             var lang = new Lang();
+             lang.dynamic('vi', '/langs/vi.json');
+             lang.init({
+                 defaultLang: 'en',
+                 currentLang: 'vi'
+             });
+
+             // Button SignIn click
+             $("#buttonSignIn").click(function () {
+                 // TODO validation
+                 // Post request
+                 $.ajax({
+                     url: "/authenticate",
+                     type: "POST",
+                     contentType: "application/json; charset=utf-8",
+                     data: JSON.stringify($(".form-signin").serializeObject()),
+                     dataType: "json",
+                     success: function(data) {
+                         // TODO check result
+                         console.log("Great !!!");
+                         console.log(JSON.stringify(data));
+                     },
+                     error: function() {}
+                 });
+             });
+
+             return _this;
+         })();
+        </script>
     </body>
 </html>
