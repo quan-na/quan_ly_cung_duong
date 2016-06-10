@@ -95,8 +95,12 @@
                      dataType: "json",
                      success: function(data) {
                          // TODO check result
-                         console.log("Great !!!");
-                         console.log(JSON.stringify(data));
+                         if (typeof(data.result) == 'string' && 'ok' == data.result) {
+                             window.location.href = '/html/home.html';
+                         } else {
+                             if (typeof(data.reason) == 'string')
+                                 alert(data.reason);
+                         }
                      },
                      error: function() {}
                  });
