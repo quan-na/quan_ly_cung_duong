@@ -54,8 +54,11 @@ $app->post('/authenticate', function (Request $request, Response $response) {
 });
 
 $app->post('/logout', function (Request $request, Response $response) {
-    return UamController::logout();
+    UamController::logout();
+    return $response->withJson(array('result' => 'ok'));
 });
+
+$app->post('/menu/list', '\MenuController:menuList');
 
 $app->run();
 ?>

@@ -5,7 +5,16 @@
 		"Password":"M\u1EADt kh\u1EA9u",
 		"Remember me":"Ghi nh\u1EDB \u0111\u0103ng nh\u1EADp",
 		"Sign in":"\u0110\u0103ng nh\u1EADp",
-    "QLCD":"Qu\u1EA3n l\u00FD c\u00FAng d\u01B0\u1EDDng"
+    "QLCD":"Qu\u1EA3n l\u00FD c\u00FAng d\u01B0\u1EDDng",
+    "#":"#",
+    "Cung duong":"C\u00FAng d\u01B0\u1EDDng",
+    "Create cung duong":"Nh\u1EADp c\u00FAng d\u01B0\u1EDDng",
+    "List cung duong":"Danh s\u00E1ch c\u00FAng d\u01B0\u1EDDng",
+    "Report cung duong":"B\u00E1o c\u00E1o c\u00FAng d\u01B0\u1EDDng",
+    "User":"Ng\u01B0\u1EDDi d\u00F9ng",
+    "User info":"Th\u00F4ng tin ng\u01B0\u1EDDi d\u00F9ng",
+    "List user":"Danh s\u00E1ch ng\u01B0\u1EDDi d\u00F9ng",
+    "Logout":"\u0110\u0103ng xu\u1EA5t"
 	},
 	"regex": []
 }

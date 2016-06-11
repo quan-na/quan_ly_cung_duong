@@ -5,14 +5,14 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 class UamController {
     protected $ci;
-    //Constructor
+
     public function __construct(ContainerInterface $ci) {
         $this->ci = $ci;
     }
-    
+
     public function getLoggedInUsername(Request $request, Response $response) {
         // update last access, and remove 'not remember me' cookies
-        if (NULL == $_SESSION['rememberMe'] and 18 < time() - ($_SESSION['last_access'] ?: 0)) {
+        if (NULL == $_SESSION['rememberMe'] and 1800 < time() - ($_SESSION['last_access'] ?: 0)) {
             $this->ci->logger->addInfo('!!! User session expired for user : ' . $_SESSION['username']);
             UamController::logout();
         } else {
@@ -20,7 +20,7 @@ class UamController {
         }
         return $_SESSION['username'];
     }
-    
+
     public function authenticate(Request $request, Response $response) {
         // Do authentication, return response as controller
         $parsedBody = $request->getParsedBody();

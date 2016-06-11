@@ -12,10 +12,16 @@ var globalControl = (function () {
 
     // menu items actions
     var menuActions = {
-        // TODO handlers
-        'test': function() { alert('test');},
-        'home': function() { alert('home');},
-        'about': function() { alert('about');}
+        'create_cung_duong': function() {},
+        'list_cung_duong': function() {},
+        'report_cung_duong': function() {},
+        'user_info': function() {},
+        'list_user': function() {},
+        'logout': function() {
+            _this.doAjax("/logout", {}, function(data) {
+                window.location.href = "/";
+            });
+        }
     };
     _this.hasMenuAction = function(menuId) {
         if (typeof(menuActions[menuId]) == 'function')
@@ -76,7 +82,6 @@ var globalControl = (function () {
     };
     // do actions with retries
     _this.doAjax = function (url, dataObject, successCallback) {
-        // TODO implement
         var retryCount = 0;
         var options = {
             'url': url,
@@ -107,22 +112,8 @@ var globalControl = (function () {
 
     // do these after document is loaded
     $(document).ready(function() {
-        // TODO sample menu load
-        _this.loadControl("/html/tagx/menu_item.html", $("#navbar > .navbar-nav"), {
-            menu_id: 'test',
-            menu_text: 'Test'
-        });
-        _this.loadControl("/html/tagx/menu_item.html", $("#navbar > .navbar-nav"), {
-            menu_id: 'home',
-            menu_text: 'Home'
-        });
-        _this.loadControl("/html/tagx/menu_item.html", $("#navbar > .navbar-nav"), {
-            menu_id: 'about',
-            menu_text: 'About'
-        });
         // load menu from database, trigger login modal
         _this.doAjax("/menu/list", {}, function(data) {
-            console.log("menu data loaded" + JSON.stringify(data));
             $.each(data, function (idx, obj) {
                 _this.loadControl("/html/tagx/menu_item.html", $("#navbar > .navbar-nav"), obj);
             });
