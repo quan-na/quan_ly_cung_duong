@@ -1,0 +1,16 @@
+<li><a lang="en" href="#">Menu Item</a></li>
+===to-lead-people_walk-behind-them===
+//<script type='text/javascript'>
+  function ( tag, options ) {
+    if (typeof(options.menu_text) == 'string')
+      $(tag).children("a").html(options.menu_text);
+    if (options.menu_id && globalControl.hasMenuAction(options.menu_id))
+        $(tag).children("a").click(function () {
+            $(tag).parents(".navbar-nav").children("li").removeClass('active')
+            $(tag).children().parents(".navbar-nav > li").addClass('active');
+            globalControl.menuAction(options.menu_id)();
+        });
+    // TODO load childmenus
+    // TODO load attributes
+  }
+//</script>

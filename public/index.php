@@ -35,7 +35,6 @@ $app->add(function ($request, $response, $next) {
     session_start();
     if (!in_array($request->getRequestTarget(), array('/', '/authenticate'))
         && NULL == (new UamController($this))->getLoggedInUsername($request, $response)) { 
-	      // TODO return error json
         $this->logger->addInfo("!!! not logged in");
         $response = $response->withStatus(403, 'Not authenticated.');
     } else {
@@ -46,16 +45,8 @@ $app->add(function ($request, $response, $next) {
 	  return $response;
 });
 
-$app->get('/hello/{name}', function (Request $request, Response $response) {
-    $name = $request->getAttribute('name');
-    $response->getBody()->write("Hello, $name");
-    $this->logger->addInfo("Something interesting happened");
-
-    return $response;
-});
-
 $app->get('/', function (Request $request, Response $response) {
-    return $response->withRedirect('/html/login.html', 303);
+    return $response->withRedirect('/html/home.html', 303);
 });
 
 $app->post('/authenticate', function (Request $request, Response $response) {
