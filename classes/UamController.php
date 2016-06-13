@@ -25,7 +25,7 @@ class UamController {
         // Do authentication, return response as controller
         $parsedBody = $request->getParsedBody();
         if (empty($parsedBody['username']) and empty($parseBody['password'])) {
-            $result = array('result' => 'failed', 'reason' => 'Invalid arguments.');
+            $result = array('result' => 'failed', 'reason' => 'Please input your username and password.');
         } else {
             $statement = $this->ci->db->select()->from('user_account')
                             ->where('username', '=', $parsedBody['username'])

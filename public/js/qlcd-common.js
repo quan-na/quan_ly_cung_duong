@@ -3,16 +3,20 @@ var globalControl = (function () {
     var _this = {};
 
     // Create language switcher instance
-    var lang = new Lang();
-    lang.dynamic('vi', '/langs/vi.json');
-    lang.init({
+    // TODO expose translate & switch language instead of lang object
+    _this.lang = new Lang();
+    _this.lang.dynamic('vi', '/langs/vi.json');
+    _this.lang.init({
         defaultLang: 'en',
         currentLang: 'vi'
     });
 
     // menu items actions
     var menuActions = {
-        'create_cung_duong': function() {},
+        'create_cung_duong': function() {
+            var theDiv = $("<div/>").appendTo($("body"));
+            _this.loadControl("/html/form/create_cung_duong.html", theDiv, {});
+        },
         'list_cung_duong': function() {},
         'report_cung_duong': function() {},
         'user_info': function() {},
@@ -108,6 +112,17 @@ var globalControl = (function () {
             }
         };
         $.ajax(options);
+    };
+
+    // auto-load forms
+    _this.autoLoadForm = function(tag, options) {
+        // TODO auto-load
+        $(tag).find("[autoload]").each(function(index) {
+            var option = {};
+            if ($(this).attr('attribute') && options[$(this).attr('attribute')])
+                option = options[$(this).attr('attribute')];
+            _this.loadControl("/html/tagx/"+$(this).attr('autoload')+".html", $(this), option);
+        });
     };
 
     // do these after document is loaded

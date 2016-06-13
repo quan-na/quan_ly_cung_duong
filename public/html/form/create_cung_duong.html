@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Panel heading without title</div>
+    <div class="panel-body">
+        <form role="form">
+            <div class="form-group" autoload="text_input" attribute="a_attribute"/>
+            <div class="form-group" autoload="text_input" attribute="attribute1"/>
+        </form>
+    </div>
+</div>
+===to-lead-people_walk-behind-them===
+//<script type='text/javascript'>
+   function ( tag, options ) {
+       globalControl.autoLoadForm($(tag).find("form"), {
+           a_attribute: {
+               label: "Username",
+               name: "a_attribute",
+               value: "test"
+           },
+           attribute1: {
+               label: "Password",
+               name: "attribute1",
+               value: 10
+           }
+       });
+   }
+//</script>

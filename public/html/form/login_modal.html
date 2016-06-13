@@ -5,6 +5,7 @@
             <h3 class="modal-title" lang="en">Please sign in</h3>
         </div>
         <div class="modal-body">
+            <div class="alert alert-danger" style="display:none;" lang="en" role="alert">#</div>
             <form class="form-signin">
                 <label for="inputUsername" lang="en" class="sr-only">Username</label>
                 <input type="text" id="inputUsername" name="username" lang="en" class="form-control" placeholder="Username" autofocus>
@@ -23,7 +24,6 @@
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
-       console.log("Login Modal init.");
        // Input focuses
        $(tag).find('#inputUsername').keypress(function(event){
            if(event.keyCode == 13){
@@ -37,7 +37,12 @@
        });
        // Button Sign In click
        $(tag).find("#buttonSignIn").click(function () {
-           // TODO validation
+           // validation
+           if (!($(tag).find('#inputUsername').val() && $(tag).find('#inputPassword').val())) {
+               $(tag).find('.alert-danger').text(globalControl.lang.translate("Please input your username and password."));
+               $(tag).find('.alert-danger').fadeIn();
+               return false;
+           }
            // Post request
            $.ajax({
                url: "/authenticate",
@@ -49,12 +54,17 @@
                    if (typeof(data.result) == 'string' && 'ok' == data.result) {
                        if (typeof(options.modalId) == 'string')
                            $("#"+options.modalId).modal('hide');
+                       $(tag).find('#inputUsername').val("");
+                       $(tag).find('#inputPassword').val("");
+                       $(tag).find('.alert-danger').fadeOut();
                        if (typeof(options.loggedInCallback) == 'function')
                            options.loggedInCallback();
                    } else {
-                       // TODO put message inside form
-                       if (typeof(data.reason) == 'string')
-                           alert(data.reason);
+                       // put message inside form
+                       if (typeof(data.reason) == 'string') {
+                           $(tag).find('.alert-danger').text(globalControl.lang.translate(data.reason));
+                           $(tag).find('.alert-danger').fadeIn();
+                       }
                    }
                },
                error: function() {}
