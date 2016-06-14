@@ -16,7 +16,19 @@
     "List user":"Danh s\u00E1ch ng\u01B0\u1EDDi d\u00F9ng",
     "Logout":"\u0110\u0103ng xu\u1EA5t",
     "Please input your username and password.":"Xin nh\u1EADp t\u00EAn d\u0103ng nh\u1EADp v\u00E0 m\u1EADt kh\u1EA9u.",
-    "Wrong username or password.":"Sai t\u00EAn d\u0103ng nh\u1EADp hay m\u1EADt kh\u1EA9u."
+    "Wrong username or password.":"Sai t\u00EAn d\u0103ng nh\u1EADp hay m\u1EADt kh\u1EA9u.",
+    "Name":"T\u00EAn",
+    "Phap danh":"Ph\u00E1p danh",
+    "Phone":"S\u1ED1 \u0111i\u1EC7n tho\u1EA1i",
+    "Email":"Th\u01B0 \u0111i\u1EC7n t\u1EED",
+    "Search phat tu":"T\u00ECm ki\u1EBFm ph\u1EADt t\u1EED",
+    "Create phat tu":"Nh\u1EADp m\u1EDBi ph\u1EADt t\u1EED",
+    "Tinh tai":"T\u1ECBnh t\u00E0i",
+    "Tinh vat":"T\u1ECBnh v\u1EADt",
+    "Tong cung duong":"T\u1ED5ng c\u00FAng d\u01B0\u1EDDng",
+    "Ghi chu":"Ghi ch\u00FA",
+    "Phat tu information":"Th\u00F4ng tin ph\u1EADt t\u1EED",
+    "Cung duong information":"Th\u00F4ng tin c\u00FAng d\u01B0\u1EDDng"
 	},
 	"regex": []
 }
