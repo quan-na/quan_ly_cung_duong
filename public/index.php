@@ -33,7 +33,7 @@ $app->add(function ($request, $response, $next) {
     session_set_cookie_params(172800);
     session_cache_limiter(false);
     session_start();
-    if (!in_array($request->getRequestTarget(), array('/', '/authenticate'))
+    if (!in_array($request->getRequestTarget(), array('/', '/authenticate', '/logout'))
         && NULL == (new UamController($this))->getLoggedInUsername($request, $response)) { 
         $this->logger->addInfo("!!! not logged in");
         $response = $response->withStatus(403, 'Not authenticated.');

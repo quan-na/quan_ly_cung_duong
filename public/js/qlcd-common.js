@@ -11,11 +11,15 @@ var globalControl = (function () {
         currentLang: 'vi'
     });
 
-    // menu items actions
+    // menu items actions TODO Move this to separated file
     var menuActions = {
         'create_cung_duong': function() {
-            var theDiv = $("<div/>").appendTo($("body"));
-            _this.loadControl("/html/form/create_cung_duong.html", theDiv, {});
+            if ($("div.create_cung_duong-view").length == 0) {
+                var theDiv = $("<div class='container create_cung_duong-view'/>").insertAfter($("div.home-view"));
+                _this.loadControl("/html/form/create_cung_duong.html", theDiv, {});
+            }
+            $("body").children("div.container").addClass("hidden");
+            $("body").children("div.create_cung_duong-view").removeClass("hidden");
         },
         'list_cung_duong': function() {},
         'report_cung_duong': function() {},
@@ -53,6 +57,7 @@ var globalControl = (function () {
             $.ajax({
                 'url':url,
                 type: "GET",
+                cache: false,
                 dataType: "text",
                 success: function(data) {
                     var splitData = data.split("===to-lead-people_walk-behind-them===");
@@ -106,7 +111,9 @@ var globalControl = (function () {
                         $.ajax(options);
                     });
                 } else if (textStatus == "timeout" && retryCount<3) {
-                    $.ajax(options);
+                    setTimeout(function() {
+                        $.ajax(options);
+                    }, 1000*retryCount);
                 }
                 retryCount++;
             }
@@ -116,7 +123,6 @@ var globalControl = (function () {
 
     // auto-load forms
     _this.autoLoadForm = function(tag, options) {
-        // TODO auto-load
         $(tag).find("[autoload]").each(function(index) {
             var option = {};
             if ($(this).attr('attribute') && options[$(this).attr('attribute')])

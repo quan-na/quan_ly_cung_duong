@@ -1,9 +1,38 @@
+<h1 lang="en">Create cung duong</h1>
 <div class="panel panel-default">
-    <div class="panel-heading">Panel heading without title</div>
+    <div class="panel-heading" lang="en">Phat tu information</div>
     <div class="panel-body">
-        <form role="form">
-            <div class="form-group" autoload="text_input" attribute="a_attribute"/>
-            <div class="form-group" autoload="text_input" attribute="attribute1"/>
+        <form role="form" class="phat_tu_info-form">
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="text_input" attribute="name"/>
+                <div class="form-group col-sm-6" autoload="text_input" attribute="phap_danh"/>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="text_input" attribute="phone"/>
+                <div class="form-group col-sm-6" autoload="text_input" attribute="email"/>
+            </div>
+            <div class="btn-toolbar" role="toolbar" aria-label="...">
+                <div autoload="button" attribute="create_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+                <div autoload="button" attribute="search_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading" lang="en">Cung duong information</div>
+    <div class="panel-body">
+        <form role="form" class="cung_duong_info-form">
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="text_input" attribute="tinh_tai"/>
+                <div class="form-group col-sm-6" autoload="text_input" attribute="tinh_vat"/>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="text_input" attribute="tong_cung_duong"/>
+                <div class="form-group col-sm-6" autoload="text_input" attribute="ghi_chu"/>
+            </div>
+            <div class="btn-toolbar" role="toolbar" aria-label="...">
+                <div autoload="button" attribute="create_cd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            </div>
         </form>
     </div>
 </div>
@@ -11,15 +40,54 @@
 //<script type='text/javascript'>
    function ( tag, options ) {
        globalControl.autoLoadForm($(tag).find("form"), {
-           a_attribute: {
-               label: "Username",
-               name: "a_attribute",
-               value: "test"
+           name: {
+               label: "Name",
+               name: "name",
+               value: ""
            },
-           attribute1: {
-               label: "Password",
-               name: "attribute1",
-               value: 10
+           phap_danh: {
+               label: "Phap danh",
+               name: "phap_danh"
+           },
+           phone: {
+               label: "Phone",
+               name: "phone"
+           },
+           email: {
+               label: "Email",
+               name: "email"
+           },
+           tinh_tai: {
+               label: "Tinh tai",
+               name: "tinh_tai",
+               value: ""
+           },
+           tinh_vat: {
+               label: "Tinh vat",
+               name: "tinh_vat"
+           },
+           tong_cung_duong: {
+               label: "Tong cung duong",
+               name: "tong_cung_duong"
+           },
+           ghi_chu: {
+               label: "Ghi chu",
+               name: "ghi_chu"
+           },
+           search_pt_button: {
+               label: "Search phat tu",
+               callback: function(tag) {
+               }
+           },
+           create_pt_button: {
+               label: "Create phat tu",
+               callback: function(tag) {
+               }
+           },
+           create_cd_button: {
+               label: "Create cung duong",
+               callback: function(tag) {
+               }
            }
        });
    }

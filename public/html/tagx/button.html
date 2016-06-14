@@ -1,0 +1,11 @@
+<button type="button" lang="en" class="btn btn-default">#</button>
+===to-lead-people_walk-behind-them===
+//<script type='text/javascript'>
+   function ( tag, options ) {
+       // TODO and colors
+       if (typeof(options.label) == 'string')
+           $(tag).filter("button").text(globalControl.lang.translate(options.label));
+       if (typeof(options.callback) == 'function')
+           options.callback($(tag).filter("button"));
+   }
+//</script>
