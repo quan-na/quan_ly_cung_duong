@@ -16,6 +16,9 @@
                 <div autoload="button" attribute="search_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
             </div>
         </form>
+        <div class="row">
+            <div class="col-sm-12" autoload="data_grid" attribute="phat_tu_grid"/>
+        </div>
     </div>
 </div>
 <div class="panel panel-default">
@@ -30,6 +33,10 @@
                 <div class="form-group col-sm-6" autoload="text_input" attribute="tong_cung_duong"/>
                 <div class="form-group col-sm-6" autoload="text_input" attribute="ghi_chu"/>
             </div>
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="single_select" attribute="test_select"/>
+                <div class="form-group col-sm-6" autoload="date_picker" attribute="test_date"/>
+            </div>
             <div class="btn-toolbar" role="toolbar" aria-label="...">
                 <div autoload="button" attribute="create_cd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
             </div>
@@ -39,7 +46,7 @@
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
-       globalControl.autoLoadForm($(tag).find("form"), {
+       globalControl.autoLoadForm($(tag), {
            name: {
                label: "Name",
                name: "name",
@@ -88,6 +95,26 @@
                label: "Create cung duong",
                callback: function(tag) {
                }
+           },
+           test_select: {
+               label: "Ghi chu",
+               name: "ghi_chu"
+           },
+           test_date: {
+               label: "Ghi chu",
+               name: "ghi_chu"
+           },
+           phat_tu_grid: {
+               identifier: 'id',
+               headerObj:{
+                   'id': "Id",
+                   'name': "Name",
+                   'phap_danh': "Phap danh",
+                   'phone': "Phone",
+                   'email': "Email"
+               },
+               dataUrl: '/phat_tu/list',
+               selection: 'single'
            }
        });
    }

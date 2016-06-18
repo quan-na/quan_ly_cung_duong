@@ -1,0 +1,22 @@
+<label lang="en">#</label>
+<div class='input-group date'>
+    <input type='text' class="form-control" />
+    <span class="input-group-addon">
+        <span class="glyphicon glyphicon-calendar"></span>
+    </span>
+</div> 
+===to-lead-people_walk-behind-them===
+//<script type='text/javascript'>
+   function ( tag, options ) {
+       // TODO change language dynamically
+       if (typeof(options.label) == 'string')
+           $(tag).filter("label").text(globalControl.lang.translate(options.label));
+       if (typeof(options.name) == 'string')
+           $(tag).find("input").attr('name', options.name);
+       $(tag).filter("div.date").datetimepicker({
+           locale:globalControl.lang.currentLang,
+           format:'DD/MM/YYYY',
+           allowInputToggle:true
+       });
+   }
+//</script>

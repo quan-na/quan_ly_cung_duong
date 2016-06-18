@@ -1,0 +1,28 @@
+<label lang="en">#</label>
+<p>
+    <select class="form control" style="width: 100%"></select>
+</p> 
+===to-lead-people_walk-behind-them===
+//<script type='text/javascript'>
+   function ( tag, options ) {
+       //  <option value="volvo">Volvo</option>
+       if (typeof(options.label) == 'string')
+           $(tag).filter("label").text(globalControl.lang.translate(options.label));
+       if (typeof(options.name) == 'string')
+           $(tag).find("select").attr('name', options.name);
+       if (options.multiple)
+           $(tag).find("select").attr('multiple', 'multiple');
+       // options and values
+       if (typeof(options.options) == 'object')
+           $.each(options.options, function (idx, val) {
+               $("<option lang='en' value='"+idx+"'>"+val+"</option>").appendTo($(tag).find("select"));
+           });
+       // TODO multiple select values
+       if (typeof(options.value) == 'string')
+           $(tag).find("select").children("option[value="+options.value+"]").attr("selected", "selected");
+       $(tag).find("select").select2({
+           placeholder: "-", // TODO use text
+           allowClear: true
+       });
+   }
+//</script>

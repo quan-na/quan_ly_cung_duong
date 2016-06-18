@@ -1,0 +1,74 @@
+<table class="table table-condensed table-hover table-striped">
+    <thead>
+        <tr></tr>
+    </thead>
+</table>
+===to-lead-people_walk-behind-them===
+//<script type='text/javascript'>
+   function ( tag, options ) {
+       var idColKey = 'id';
+       if (typeof(options.identifier) == 'string')
+           idColKey = options.identifier;
+       // load header
+       // TODO translate headers
+       // TODO translate 'no items' message
+       if (typeof(options.headerObj) == 'object')
+           $.each(options.headerObj, function(idx, val) {
+               if (idx == idColKey)
+                   $("<th data-column-id=\""+idx+"\" data-identifier=\"true\">"+val+"</th>").appendTo($(tag).find("thead > tr"));
+               else
+                   $("<th data-column-id=\""+idx+"\">"+val+"</th>").appendTo($(tag).find("thead > tr"));
+           });
+       // TODO header url
+       // Load data
+       var gridOptions = {};
+       if (options.selection == 'multi') {
+           gridOptions.selection = true;
+           gridOptions.multiSelect = true;
+           gridOptions.rowSelect = true;
+           gridOptions.keepSelection = true;
+       } else if (options.selection == 'single') {
+           gridOptions.selection = true;
+           gridOptions.multiSelect = false;
+           gridOptions.rowSelect = true;
+           gridOptions.keepSelection = false;
+       }
+       // formatters: {
+       //     "link": function(column, row) {
+       //                return "<a href=\"#\">" + column.id + ": " + row.id + "</a>";
+       //             }
+       // }
+       if (typeof(options.formatters) == 'object')
+           gridOptions.formatters = options.formatters;
+       if (typeof(options.dataUrl) == 'string') {
+           gridOptions.ajax = true;
+           gridOptions.url = options.dataUrl;
+       }
+       if (typeof(options.onGetForm) == 'function')
+           gridOptions.requestHandler = function(request) {
+               request.searchForm = options.onGetForm(); // a funtion return form object
+               return request;
+           };
+       var gridObj = $(tag).filter("table").bootgrid(gridOptions);
+       if (typeof(options.onSelect) == 'function')
+           gridObj.on("selected.rs.jquery.bootgrid", function(e, rows)
+               {
+                   var rowIds = [];
+                   for (var i = 0; i < rows.length; i++)
+                   {
+                       rowIds.push(rows[i].id);
+                   }
+                   options.onSelect(rowIds);
+               })
+       if (typeof(options.onDeselect) == 'function')
+           gridObj.on("deselected.rs.jquery.bootgrid", function(e, rows)
+               {
+                   var rowIds = [];
+                   for (var i = 0; i < rows.length; i++)
+                   {
+                       rowIds.push(rows[i].id);
+                   }
+                   options.onDeselect(rowIds);
+               });
+   }
+//</script>
