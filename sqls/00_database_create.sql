@@ -78,3 +78,18 @@ INSERT INTO `menu_item` (`menu_id`, `priority`, `menu_text`, `ar_owner`, `ar_gro
 INSERT INTO `menu_item` (`menu_id`, `priority`, `menu_text`, `parent_menu`, `ar_owner`, `ar_group_level`, `ar_user`, `ar_group`, `ar_other`) VALUES ('user_info', '21', 'User info', 'user', 'admin', '100', '3', '1', '0');
 INSERT INTO `menu_item` (`menu_id`, `priority`, `menu_text`, `parent_menu`, `ar_owner`, `ar_group_level`, `ar_user`, `ar_group`, `ar_other`) VALUES ('list_user', '22', 'List user', 'user', 'admin', '0', '3', '1', '0');
 INSERT INTO `menu_item` (`menu_id`, `priority`, `menu_text`, `parent_menu`, `ar_owner`, `ar_group_level`, `ar_user`, `ar_group`, `ar_other`) VALUES ('logout', '23', 'Logout', 'user', 'admin', '100', '3', '1', '0');
+
+create table phat_tu (
+	id bigint not null primary key auto_increment,
+    name varchar(255),
+    phap_danh varchar(255),
+    phone varchar(50),
+    email varchar(50),
+
+    -- access right to this phat tu
+    ar_owner varchar(50) not null,
+    ar_group_level smallint not null default 10,
+    ar_user smallint not null default 3,
+    ar_group smallint not null default 1,
+    ar_other smallint not null default 0
+);
