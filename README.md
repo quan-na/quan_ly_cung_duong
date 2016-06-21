@@ -1,3 +1,5 @@
+> **Project status**: *runnable* - It 's usable but not ready for production.
+
 # YÊU CẦU CHO ỨNG DỤNG QUẢN LÝ TỊNH TÀI CÚNG DƯỜNG
 
 THÔNG TIN
