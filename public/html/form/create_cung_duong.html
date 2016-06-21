@@ -17,7 +17,7 @@
             </div>
         </form>
         <div class="row">
-            <div class="col-sm-12" autoload="data_grid" attribute="phat_tu_grid"/>
+            <div class="col-sm-12 table-responsive" autoload="data_grid" attribute="phat_tu_grid"/>
         </div>
     </div>
 </div>
@@ -33,10 +33,6 @@
                 <div class="form-group col-sm-6" autoload="text_input" attribute="tong_cung_duong"/>
                 <div class="form-group col-sm-6" autoload="text_input" attribute="ghi_chu"/>
             </div>
-            <div class="row">
-                <div class="form-group col-sm-6" autoload="single_select" attribute="test_select"/>
-                <div class="form-group col-sm-6" autoload="date_picker" attribute="test_date"/>
-            </div>
             <div class="btn-toolbar" role="toolbar" aria-label="...">
                 <div autoload="button" attribute="create_cd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
             </div>
@@ -46,63 +42,88 @@
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
+       var _this = { searchForm: {}};
        globalControl.autoLoadForm($(tag), {
-           name: {
-               label: "Name",
-               name: "name",
-               value: ""
-           },
-           phap_danh: {
-               label: "Phap danh",
-               name: "phap_danh"
-           },
-           phone: {
-               label: "Phone",
-               name: "phone"
-           },
-           email: {
-               label: "Email",
-               name: "email"
-           },
-           tinh_tai: {
-               label: "Tinh tai",
-               name: "tinh_tai",
-               value: ""
-           },
-           tinh_vat: {
-               label: "Tinh vat",
-               name: "tinh_vat"
-           },
-           tong_cung_duong: {
-               label: "Tong cung duong",
-               name: "tong_cung_duong"
-           },
-           ghi_chu: {
-               label: "Ghi chu",
-               name: "ghi_chu"
-           },
+           name: { label: "Name", name: "name" },
+           phap_danh: { label: "Phap danh", name: "phap_danh" },
+           phone: { label: "Phone", name: "phone" },
+           email: { label: "Email", name: "email" },
+           tinh_tai: { label: "Tinh tai", name: "tinh_tai" },
+           tinh_vat: { label: "Tinh vat", name: "tinh_vat" },
+           tong_cung_duong: { label: "Tong cung duong", name: "tong_cung_duong" },
+           ghi_chu: { label: "Ghi chu", name: "ghi_chu" },
            search_pt_button: {
                label: "Search phat tu",
-               callback: function(tag) {
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       _this.searchForm = $(tag).find("form.phat_tu_info-form").serializeObject();
+                       $(tag).find("div.table-responsive > table").bootgrid('reload');
+                   });
                }
            },
            create_pt_button: {
                label: "Create phat tu",
-               callback: function(tag) {
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       var form = $(tag).find("form.phat_tu_info-form").serializeObject();
+                       // check if name is inputed
+                       if (!(form['name'] || form['phap_danh'])) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Name or Phap danh is required."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn",
+                                       callback: function() {}
+                                   }
+                               }
+                           });
+                       } else { // message warning
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Are you sure you want to create new phat tu?"),
+                               buttons: {
+                                   yes: {
+                                       label: globalControl.lang.translate("Yes"),
+                                       className: "btn",
+                                       callback: function() {
+                                           globalControl.doAjax('/phat_tu/create', form,
+                                                                function(data) {
+                                                                    if (data.result == 'ok') {
+                                                                        // TODO clear form
+                                                                        // reload grid
+                                                                        _this.searchForm = form;
+                                                                        $(tag).find("div.table-responsive > table").bootgrid('reload');
+                                                                    } else {
+                                                                        // alert message
+                                                                        bootbox.dialog({
+                                                                            message: globalControl.lang.translate(data.message),
+                                                                            buttons: {
+                                                                                ok: {
+                                                                                    label: globalControl.lang.translate("OK"),
+                                                                                    className: "btn",
+                                                                                    callback: function() {}
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
+                                       }
+                                   },
+                                   no: {
+                                       label: globalControl.lang.translate("No"),
+                                       className: "btn",
+                                       callback: function() { /* nope */ }
+                                   }
+                               }
+                           });
+                       }
+                   });
                }
            },
            create_cd_button: {
                label: "Create cung duong",
-               callback: function(tag) {
+               callback: function(btTag) {
                }
-           },
-           test_select: {
-               label: "Ghi chu",
-               name: "ghi_chu"
-           },
-           test_date: {
-               label: "Ghi chu",
-               name: "ghi_chu"
            },
            phat_tu_grid: {
                identifier: 'id',
@@ -114,7 +135,10 @@
                    'email': "Email"
                },
                dataUrl: '/phat_tu/list',
-               selection: 'single'
+               selection: 'single',
+               onGetForm: function() {
+                   return _this.searchForm;
+               }
            }
        });
    }

@@ -60,6 +60,7 @@ $app->post('/logout', function (Request $request, Response $response) {
 
 $app->post('/menu/list', '\MenuController:menuList');
 $app->post('/phat_tu/list', '\PhatTuController:phatTuList');
+$app->post('/phat_tu/create', '\PhatTuController:phatTuCreate');
 
 $app->run();
 ?>
