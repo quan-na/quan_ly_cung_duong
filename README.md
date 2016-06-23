@@ -1,3 +1,5 @@
+> **Project status**: *runnable* - It 's usable but not ready for production.
+
 # YÊU CẦU CHO ỨNG DỤNG QUẢN LÝ TỊNH TÀI CÚNG DƯỜNG
 
 THÔNG TIN
@@ -30,7 +32,7 @@ Thanks Alls.
 # Deployment instruction
 
 1. Call composer to get all needed dependencies
-php composer.phar install
+> php composer.phar install
 
 2. Deploy with document root at 'public' folder
 
