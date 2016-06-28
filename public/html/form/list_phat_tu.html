@@ -1,5 +1,5 @@
 <h1 lang="en">List phat tu</h1>
-<div class="panel panel-default">
+<div class="panel panel-default phat_tu_list-panel">
     <div class="panel-heading" lang="en">List</div>
     <div class="panel-body">
         <div class="row">
@@ -8,11 +8,12 @@
         <div class="btn-toolbar" role="toolbar" aria-label="...">
             <div autoload="button" attribute="create_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
             <div autoload="button" attribute="edit_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            <div autoload="button" attribute="delete_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
             <div autoload="button" attribute="choose_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
         </div>
     </div>
 </div>
-<div class="panel panel-default">
+<div class="panel panel-default phat_tu_info-panel">
     <div class="panel-heading" lang="en">Thong tin phat tu</div>
     <div class="panel-body">
         <form role="form" class="phat_tu_info-form">
@@ -35,6 +36,94 @@
 //<script type='text/javascript'>
    function ( tag, options ) {
        var _this = {};
+       var _buttons = {};
+       var _selectCallback = function() {};
+       globalControl.autoLoadForm($(tag), {
+           phat_tu_grid: {
+               identifier: 'id',
+               headerObj:{
+                   'id': "Id",
+                   'name': "Name",
+                   'phap_danh': "Phap danh",
+                   'phone': "Phone",
+                   'email': "Email"
+               },
+               dataUrl: '/phat_tu/list',
+               selection: 'single',
+               onGetForm: function() {
+                   return _this.searchForm;
+               }
+           },
+           create_pt_button: {
+               label: "Create phat tu",
+               callback: function(btTag) {
+                   _buttons['create'] = $(btTag);
+                   // TODO onlick
+               }
+           },
+           edit_pt_button: {
+               label: "Edit phat tu",
+               callback: function(btTag) {
+                   _buttons['edit'] = $(btTag);
+                   // TODO onlick
+                   // $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows") -> [2]
+               }
+           },
+           delete_pt_button: {
+               label: "Delete phat tu",
+               callback: function(btTag) {
+                   _buttons['delete'] = $(btTag);
+                   // TODO onlick
+               }
+           },
+           choose_pt_button: {
+               label: "Choose phat tu",
+               callback: function(btTag) {
+                   _buttons['choose'] = $(btTag).hide();
+                   // TODO onlick
+               }
+           },
+           name: { label: "Name", name: "name" },
+           phap_danh: { label: "Phap danh", name: "phap_danh" },
+           phone: { label: "Phone", name: "phone" },
+           email: { label: "Email", name: "email" },
+           save_pt_button: {
+               label: "Save phat tu",
+               callback: function(btTag) {
+               }
+           },
+           cancel_pt_button: {
+               label: "Cancel phat tu",
+               callback: function(btTag) {
+               }
+           }
+       });
+       // function to initialize this form
+       _this.initialize = function(selectButtonLabel, selectButtonCallback) {
+           $(tag).filter("div.phat_tu_list-panel").show();
+           $(tag).filter("div.phat_tu_info-panel").hide();
+           if (selectButtonLabel == "<none>") {
+               _buttons['create'].show();
+               _buttons['edit'].show();
+               _buttons['delete'].show();
+               _buttons['choose'].hide();
+           } else {
+               _buttons['create'].hide();
+               _buttons['edit'].hide();
+               _buttons['delete'].show();
+               _buttons['choose'].show().filter("button")
+                                 .text(globalControl.lang.translate(selectButtonLabel));
+               _selectCallback = selectButtonCallback;
+           }
+       };
+       $(tag).filter("div.phat_tu_list-panel").show();
+       $(tag).filter("div.phat_tu_info-panel").hide();
+       // function to load phat tu form
+       var _loadPhatTuForm = function(id) {
+           if (id == -1)
+               $(tag).find("form.phat_tu_info-form input").val("");
+           // TODO do ajax load form
+       }
        if (typeof(options.callback) == 'function')
            options.callback(_this);
    }
