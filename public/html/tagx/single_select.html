@@ -17,6 +17,8 @@
            $.each(options.options, function (idx, val) {
                $("<option lang='en' value='"+idx+"'>"+val+"</option>").appendTo($(tag).find("select"));
            });
+       // TODO optionUrl
+       // TODO manual input
        // TODO multiple select values
        if (typeof(options.value) == 'string')
            $(tag).find("select").children("option[value="+options.value+"]").attr("selected", "selected");

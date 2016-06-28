@@ -68,7 +68,10 @@ class PhatTuController {
             $insertStatement = $this->ci->db->insert(array('name', 'phap_danh', 'phone', 'email',
                                                            'ar_owner', 'ar_group_level', 'ar_user', 'ar_group', 'ar_other'))
                                     ->into('phat_tu')
-                                    ->values(array($parsedBody['name'], $parsedBody['phap_danh'], $parsedBody['phone'], $parsedBody['email'],
+                                    ->values(array($parsedBody['name'],
+                                                   $parsedBody['phap_danh'],
+                                                   $parsedBody['phone'],
+                                                   $parsedBody['email'],
                                                    $_SESSION['username'], $_SESSION['group_level'], 3, 2, 0));
             $insertId = $insertStatement->execute(false);
             $returnObj['result'] = 'ok';
