@@ -21,7 +21,7 @@ create table user_account (
     ar_user smallint not null default 3,
     ar_group smallint not null default 1,
     ar_other smallint not null default 0
-);
+) CHARSET utf8 COLLATE utf8_vietnamese_ci;
 
 INSERT INTO `user_account`
    (`username`,
@@ -68,7 +68,7 @@ create table menu_item (
     ar_user smallint not null default 3,
     ar_group smallint not null default 1,
     ar_other smallint not null default 0
-);
+) CHARSET utf8 COLLATE utf8_vietnamese_ci;
 
 INSERT INTO `menu_item` (`menu_id`, `priority`, `menu_text`, `ar_owner`, `ar_group_level`, `ar_user`, `ar_group`, `ar_other`) VALUES ('cung_duong', '1', 'Cung duong', 'admin', '10', '3', '1', '0');
 INSERT INTO `menu_item` (`menu_id`, `priority`, `menu_text`, `parent_menu`, `ar_owner`, `ar_group_level`, `ar_user`, `ar_group`, `ar_other`) VALUES ('create_cung_duong', '11', 'Create cung duong', 'cung_duong', 'admin', '10', '3', '1', '0');
@@ -92,4 +92,32 @@ create table phat_tu (
     ar_user smallint not null default 3,
     ar_group smallint not null default 1,
     ar_other smallint not null default 0
-);
+) CHARSET utf8 COLLATE utf8_vietnamese_ci;
+
+create table muc_cung_duong (
+	id bigint not null primary key auto_increment,
+    name varchar(255),
+
+    -- access right to this phat tu
+    ar_owner varchar(50) not null,
+    ar_group_level smallint not null default 10,
+    ar_user smallint not null default 3,
+    ar_group smallint not null default 1,
+    ar_other smallint not null default 0
+) CHARSET utf8 COLLATE utf8_vietnamese_ci;
+
+create table cung_duong (
+	id bigint not null primary key auto_increment,
+    phat_tu_id bigint,
+    muc_cung_duong_id bigint,
+    tinh_tai_vat varchar(255),
+    qui_doi bigint,
+    ghi_chu varchar(255),
+
+    -- access right to this phat tu
+    ar_owner varchar(50) not null,
+    ar_group_level smallint not null default 10,
+    ar_user smallint not null default 3,
+    ar_group smallint not null default 1,
+    ar_other smallint not null default 0
+) CHARSET utf8 COLLATE utf8_vietnamese_ci;
