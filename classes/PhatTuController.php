@@ -22,8 +22,8 @@ class PhatTuController {
         $countStatement = $this->ci->db->select(array('id'))->count()->from('phat_tu');
         // filter by keyword
         if (!empty($parsedBody['searchPhrase'])) {
-            $statement->where("CONCAT_WS(',',name,phap_danh,phone,email)", 'LIKE', '%' . $parsedBody['searchPhrase'] . '%');
-            $countStatement->where("CONCAT_WS(',',name,phap_danh,phone,email)", 'LIKE', '%' . $parsedBody['searchPhrase'] . '%');
+            $statement->where("CONCAT(id,'#',CONCAT_WS(',',name,phap_danh,phone,email))", 'LIKE', '%' . $parsedBody['searchPhrase'] . '%');
+            $countStatement->where("CONCAT(id,'#',CONCAT_WS(',',id,name,phap_danh,phone,email))", 'LIKE', '%' . $parsedBody['searchPhrase'] . '%');
         }
         // TODO filter by permission
         // filter with form
@@ -76,6 +76,63 @@ class PhatTuController {
             $insertId = $insertStatement->execute(false);
             $returnObj['result'] = 'ok';
             $returnObj['id'] = $insertId;
+        }
+        return $response->withJson($returnObj);
+    }
+
+    public function phatTuDelete($request, $response, $args) {
+        $returnObj = array();
+        $parsedBody = $request->getParsedBody();
+        $this->ci->logger->addInfo('--- Phat tu delete request received : ' . json_encode($parsedBody));
+        // TODO validate
+        $deleteStatement = $this->ci->db->delete()
+                                ->from('phat_tu')
+                                ->where('id','=',$parsedBody['id']);
+        $returnObj['rows'] = $deleteStatement->execute();
+        return $response->withJson($returnObj);
+    }
+
+    public function phatTuGet($request, $response, $args) {
+        $parsedBody = $request->getParsedBody();
+        $statement = $this->ci->db->select()->from('phat_tu')
+                          ->where('id', '=', $parsedBody['id']);
+        $pdoStatement = $statement->execute();
+        $phatTu = $pdoStatement->fetch(PDO::FETCH_OBJ);
+        return $response->withJson($phatTu);
+    }
+
+    public function phatTuSave($request, $response, $args) {
+        $returnObj = array();
+        $parsedBody = $request->getParsedBody();
+        $this->ci->logger->addInfo('--- Phat tu save request received : ' . json_encode($parsedBody));
+        // validate
+        if (!($parsedBody['name'] or $parsedBody['phap_danh'])) {
+            $returnObj['result'] = 'error';
+            $returnObj['message'] = 'Name or Phap danh is required.';
+        } else {
+            if (0 > $parsedBody['id']) {
+                $insertStatement = $this->ci->db->insert(array('name', 'phap_danh', 'phone', 'email',
+                                                               'ar_owner', 'ar_group_level', 'ar_user', 'ar_group', 'ar_other'))
+                                        ->into('phat_tu')
+                                        ->values(array($parsedBody['name'],
+                                                       $parsedBody['phap_danh'],
+                                                       $parsedBody['phone'],
+                                                       $parsedBody['email'],
+                                                       $_SESSION['username'], $_SESSION['group_level'], 3, 2, 0));
+                $insertId = $insertStatement->execute(false);
+                $returnObj['result'] = 'ok';
+                $returnObj['id'] = $insertId;
+            } else {
+                $updateStatement = $this->ci->db->update(array('name' => $parsedBody['name'],
+                                                               'phap_danh' => $parsedBody['phap_danh'],
+                                                               'phone' => $parsedBody['phone'],
+                                                               'email' => $parsedBody['email']))
+                                        ->table('phat_tu')
+                                        ->where('id', '=', $parsedBody['id']);
+                $rows = $updateStatement->execute();
+                $returnObj['result'] = 'ok';
+                $returnObj['rows'] = $rows;
+            }
         }
         return $response->withJson($returnObj);
     }
