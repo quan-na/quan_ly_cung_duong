@@ -1,8 +1,166 @@
 <h1 lang="en">List muc cung duong</h1>
+<div class="panel panel-default muc_cung_duong_list-panel">
+    <div class="panel-heading" lang="en">List</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12 table-responsive" autoload="data_grid" attribute="muc_cung_duong_grid"/>
+        </div>
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            <div autoload="button" attribute="create_mcd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            <div autoload="button" attribute="edit_mcd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            <div autoload="button" attribute="delete_mcd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default muc_cung_duong_info-panel">
+    <div class="panel-heading" lang="en">Muc cung duong</div>
+    <div class="panel-body">
+        <form role="form" class="muc_cung_duong_info-form">
+            <input type="hidden" name="id"/>
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="text_input" attribute="name"/>
+            </div>
+            <div class="btn-toolbar" role="toolbar" aria-label="...">
+                <div autoload="button" attribute="save_mcd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+                <div autoload="button" attribute="cancel_mcd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            </div>
+        </form>
+    </div>
+</div>
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
        var _this = {};
+       globalControl.autoLoadForm($(tag), {
+           muc_cung_duong_grid: {
+               identifier: 'id',
+               headerObj:{
+                   'id': "Id",
+                   'name': "Name"
+               },
+               dataUrl: '/muc_cung_duong/list',
+               selection: 'single'
+           },
+           create_mcd_button: {
+               label: "Create muc cung duong",
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       $(tag).filter("div.muc_cung_duong_list-panel").hide();
+                       $(tag).filter("div.muc_cung_duong_info-panel").show();
+                       _loadMucCungDuongForm(-1);
+                   });
+               }
+           },
+           edit_mcd_button: {
+               label: "Edit muc cung duong",
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
+                       if (ids.length != 1)
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please select one row to edit."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       else {
+                           $(tag).filter("div.muc_cung_duong_list-panel").hide();
+                           $(tag).filter("div.muc_cung_duong_info-panel").show();
+                           _loadMucCungDuongForm(ids[0]);
+                       }
+                   });
+               }
+           },
+           delete_mcd_button: {
+               label: "Delete muc cung duong",
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
+                       if (ids.length != 1)
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please select one row to delete."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       else
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Are you sure you want to delete this muc cung duong?"),
+                               buttons: {
+                                   yes: {
+                                       label: globalControl.lang.translate("Yes"),
+                                       className: "btn",
+                                       callback: function() {
+                                           globalControl.doAjax("/muc_cung_duong/delete", {id:ids[0]}, function(data) {
+                                               $(tag).find("div.table-responsive > table").bootgrid("reload");
+                                           });
+                                       }
+                                   },
+                                   no: {
+                                       label: globalControl.lang.translate("No"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                   });
+               }
+           },
+           name: { label: "Name", name: "name" },
+           save_mcd_button: {
+               label: "Save muc cung duong",
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       var form = $(tag).find("form.muc_cung_duong_info-form").serializeObject();
+                       if (!form['name']) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Name is required."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       } else {
+                           globalControl.doAjax('/muc_cung_duong/save', form, function(data) {
+                               $(tag).find("div.table-responsive > table").bootgrid("reload");
+                               $(tag).filter("div.muc_cung_duong_list-panel").show();
+                               $(tag).filter("div.muc_cung_duong_info-panel").hide();
+                           });
+                       }
+                   });
+               }
+           },
+           cancel_mcd_button: {
+               label: "Cancel",
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       $(tag).filter("div.muc_cung_duong_list-panel").show();
+                       $(tag).filter("div.muc_cung_duong_info-panel").hide();
+                   });
+               }
+           }
+       });
+       $(tag).filter("div.muc_cung_duong_list-panel").show();
+       $(tag).filter("div.muc_cung_duong_info-panel").hide();
+       // function to load phat tu form
+       var _loadMucCungDuongForm = function(id) {
+           if (id == -1)
+               $(tag).find("form.muc_cung_duong_info-form input").val("");
+           else {
+               // do ajax load form
+               globalControl.doAjax("/muc_cung_duong/get", {'id':id}, function(data) {
+                   $(tag).find("form.muc_cung_duong_info-form input[name='name']").val(data['name']);
+               });
+           }
+           $(tag).find("form.muc_cung_duong_info-form input[name='id']").val(id);
+       }
        if (typeof(options.callback) == 'function')
            options.callback(_this);
    }

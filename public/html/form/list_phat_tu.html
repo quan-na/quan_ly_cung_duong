@@ -14,7 +14,7 @@
     </div>
 </div>
 <div class="panel panel-default phat_tu_info-panel">
-    <div class="panel-heading" lang="en">Thong tin phat tu</div>
+    <div class="panel-heading" lang="en">Phat tu</div>
     <div class="panel-body">
         <form role="form" class="phat_tu_info-form">
             <input type="hidden" name="id"/>
@@ -50,10 +50,7 @@
                    'email': "Email"
                },
                dataUrl: '/phat_tu/list',
-               selection: 'single',
-               onGetForm: function() {
-                   return _this.searchForm;
-               }
+               selection: 'single'
            },
            create_pt_button: {
                label: "Create phat tu",
@@ -185,7 +182,7 @@
                }
            },
            cancel_pt_button: {
-               label: "Cancel phat tu",
+               label: "Cancel",
                callback: function(btTag) {
                    $(btTag).filter("button").click(function() {
                        $(tag).filter("div.phat_tu_list-panel").show();
