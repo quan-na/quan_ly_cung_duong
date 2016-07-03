@@ -28,7 +28,12 @@
     "Tong cung duong":"T\u1ED5ng c\u00FAng d\u01B0\u1EDDng",
     "Ghi chu":"Ghi ch\u00FA",
     "Phat tu information":"Th\u00F4ng tin ph\u1EADt t\u1EED",
-    "Cung duong information":"Th\u00F4ng tin c\u00FAng d\u01B0\u1EDDng"
+    "Cung duong information":"Th\u00F4ng tin c\u00FAng d\u01B0\u1EDDng",
+    "Yes": "Có",
+    "No": "Không",
+    "Are you sure you want to create new phat tu?": "Bạn có chắc muốn tạo mới phật tử?",
+    "OK": "Chấp nhận",
+    "Name or Phap danh is required.": "Bạn cần nhập tên hay pháp danh của phật tử."
 	},
 	"regex": []
 }

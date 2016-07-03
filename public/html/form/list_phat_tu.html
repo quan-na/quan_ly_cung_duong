@@ -1,0 +1,226 @@
+<h1 lang="en">List phat tu</h1>
+<div class="panel panel-default phat_tu_list-panel">
+    <div class="panel-heading" lang="en">List</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12 table-responsive" autoload="data_grid" attribute="phat_tu_grid"/>
+        </div>
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            <div autoload="button" attribute="create_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            <div autoload="button" attribute="edit_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            <div autoload="button" attribute="delete_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            <div autoload="button" attribute="choose_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default phat_tu_info-panel">
+    <div class="panel-heading" lang="en">Phat tu</div>
+    <div class="panel-body">
+        <form role="form" class="phat_tu_info-form">
+            <input type="hidden" name="id"/>
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="text_input" attribute="name"/>
+                <div class="form-group col-sm-6" autoload="text_input" attribute="phap_danh"/>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="text_input" attribute="phone"/>
+                <div class="form-group col-sm-6" autoload="text_input" attribute="email"/>
+            </div>
+            <div class="btn-toolbar" role="toolbar" aria-label="...">
+                <div autoload="button" attribute="save_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+                <div autoload="button" attribute="cancel_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            </div>
+        </form>
+    </div>
+</div>
+===to-lead-people_walk-behind-them===
+//<script type='text/javascript'>
+   function ( tag, options ) {
+       var _this = {};
+       var _buttons = {};
+       var _selectCallback = function() {};
+       globalControl.autoLoadForm($(tag), {
+           phat_tu_grid: {
+               identifier: 'id',
+               headerObj:{
+                   'id': "Id",
+                   'name': "Name",
+                   'phap_danh': "Phap danh",
+                   'phone': "Phone",
+                   'email': "Email"
+               },
+               dataUrl: '/phat_tu/list',
+               selection: 'single'
+           },
+           create_pt_button: {
+               label: "Create phat tu",
+               callback: function(btTag) {
+                   _buttons['create'] = $(btTag);
+                   $(btTag).filter("button").click(function() {                       
+                       $(tag).filter("div.phat_tu_list-panel").hide();
+                       $(tag).filter("div.phat_tu_info-panel").show();
+                       // init form
+                       _loadPhatTuForm(-1);
+                   });
+               }
+           },
+           edit_pt_button: {
+               label: "Edit phat tu",
+               callback: function(btTag) {
+                   _buttons['edit'] = $(btTag);
+                   $(btTag).filter("button").click(function() {
+                       var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
+                       if (ids.length != 1)
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please select one row to edit."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       else {                       
+                           $(tag).filter("div.phat_tu_list-panel").hide();
+                           $(tag).filter("div.phat_tu_info-panel").show();
+                           // load form
+                           _loadPhatTuForm(ids[0]);
+                       }
+                   });
+               }
+           },
+           delete_pt_button: {
+               label: "Delete phat tu",
+               callback: function(btTag) {
+                   _buttons['delete'] = $(btTag);
+                   $(btTag).filter("button").click(function() {
+                       var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
+                       if (ids.length != 1)
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please select one row to delete."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       else
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Are you sure you want to delete this phat tu?"),
+                               buttons: {
+                                   yes: {
+                                       label: globalControl.lang.translate("Yes"),
+                                       className: "btn",
+                                       callback: function() {
+                                           globalControl.doAjax("/phat_tu/delete", {id:ids[0]}, function(data) {
+                                               $(tag).find("div.table-responsive > table").bootgrid("reload");
+                                           });
+                                       }
+                                   },
+                                   no: {
+                                       label: globalControl.lang.translate("No"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                   });
+               }
+           },
+           choose_pt_button: {
+               label: "Choose phat tu",
+               callback: function(btTag) {
+                   _buttons['choose'] = $(btTag).hide();
+                   // onlick
+                   $(btTag).filter("button").click(function() {
+                       var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
+                       if (ids.length != 1)
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please select one row to choose."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       else {
+                           _selectCallback(ids[0]);
+                           _this.initialiaze("");
+                       }
+                   });
+               }
+           },
+           name: { label: "Name", name: "name" },
+           phap_danh: { label: "Phap danh", name: "phap_danh" },
+           phone: { label: "Phone", name: "phone" },
+           email: { label: "Email", name: "email" },
+           save_pt_button: {
+               label: "Save phat tu",
+               callback: function(btTag) {
+                   // onclick
+                   $(btTag).filter("button").click(function() {
+                       var form = $(tag).find("form.phat_tu_info-form").serializeObject();
+                       if (!(form['name'] || form['phap_danh'])) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Name or Phap danh is required."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       } else {
+                           globalControl.doAjax('/phat_tu/save', form, function(data) {
+                               $(tag).find("div.table-responsive > table").bootgrid("reload");
+                               $(tag).filter("div.phat_tu_list-panel").show();
+                               $(tag).filter("div.phat_tu_info-panel").hide();
+                           });
+                       }
+                   });
+               }
+           },
+           cancel_pt_button: {
+               label: "Cancel",
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       $(tag).filter("div.phat_tu_list-panel").show();
+                       $(tag).filter("div.phat_tu_info-panel").hide();
+                   });
+               }
+           }
+       });
+       // function to initialize this form
+       _this.initialize = function(selectButtonLabel, selectButtonCallback) {
+           $(tag).filter("div.phat_tu_list-panel").show();
+           $(tag).filter("div.phat_tu_info-panel").hide();
+           if (selectButtonLabel == "") {
+               _buttons['choose'].hide();
+           } else {
+               _buttons['choose'].show().filter("button")
+                                 .text(globalControl.lang.translate(selectButtonLabel));
+               _selectCallback = selectButtonCallback;
+           }
+       };
+       $(tag).filter("div.phat_tu_list-panel").show();
+       $(tag).filter("div.phat_tu_info-panel").hide();
+       // function to load phat tu form
+       var _loadPhatTuForm = function(id) {
+           if (id == -1)
+               $(tag).find("form.phat_tu_info-form input").val("");
+           else {
+               // do ajax load form
+               globalControl.doAjax("/phat_tu/get", {'id':id}, function(data) {
+                   $(tag).find("form.phat_tu_info-form input[name='name']").val(data['name']);
+                   $(tag).find("form.phat_tu_info-form input[name='phap_danh']").val(data['phap_danh']);
+                   $(tag).find("form.phat_tu_info-form input[name='phone']").val(data['phone']);
+                   $(tag).find("form.phat_tu_info-form input[name='email']").val(data['email']);
+               });
+           }
+           $(tag).find("form.phat_tu_info-form input[name='id']").val(id);
+       }
+       if (typeof(options.callback) == 'function')
+           options.callback(_this);
+   }
+//</script>

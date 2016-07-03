@@ -12,25 +12,7 @@ var globalControl = (function () {
     });
 
     // menu items actions TODO Move this to separated file
-    var menuActions = {
-        'create_cung_duong': function() {
-            if ($("div.create_cung_duong-view").length == 0) {
-                var theDiv = $("<div class='container create_cung_duong-view'/>").insertAfter($("div.home-view"));
-                _this.loadControl("/html/form/create_cung_duong.html", theDiv, {});
-            }
-            $("body").children("div.container").addClass("hidden");
-            $("body").children("div.create_cung_duong-view").removeClass("hidden");
-        },
-        'list_cung_duong': function() {},
-        'report_cung_duong': function() {},
-        'user_info': function() {},
-        'list_user': function() {},
-        'logout': function() {
-            _this.doAjax("/logout", {}, function(data) {
-                window.location.href = "/";
-            });
-        }
-    };
+    var menuActions = {};
     _this.hasMenuAction = function(menuId) {
         if (typeof(menuActions[menuId]) == 'function')
             return true;
@@ -40,6 +22,9 @@ var globalControl = (function () {
         if (typeof(menuActions[menuId]) == 'function')
             return menuActions[menuId];
         return function () {};
+    };
+    _this.assignMenuActions = function(actions) {
+        menuActions = actions;
     };
 
     // load tag or forms, and append it after tag

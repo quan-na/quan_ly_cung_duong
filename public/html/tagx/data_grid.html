@@ -49,6 +49,7 @@
                request.searchForm = options.onGetForm(); // a funtion return form object
                return request;
            };
+       // TODO session timeout retry
        var gridObj = $(tag).filter("table").bootgrid(gridOptions);
        if (typeof(options.onSelect) == 'function')
            gridObj.on("selected.rs.jquery.bootgrid", function(e, rows)
