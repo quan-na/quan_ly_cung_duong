@@ -1,8 +1,242 @@
 <h1 lang="en">List cung duong</h1>
+<div class="panel panel-default cung_duong_list-panel">
+    <div class="panel-heading" lang="en">List</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12 table-responsive" autoload="data_grid" attribute="cung_duong_grid"/>
+        </div>
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            <div autoload="button" attribute="create_cd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            <div autoload="button" attribute="edit_cd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            <div autoload="button" attribute="delete_cd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default cung_duong_info-panel">
+    <div class="panel-heading" lang="en">Cung duong</div>
+    <div class="panel-body">
+        <form role="form" class="cung_duong_info-form">
+            <input type="hidden" name="id"/>
+            <div class="row">
+                <input type="hidden" name="phat_tu_id"/>
+                <div class="form-group col-sm-6">
+                    <div class="row">
+                        <div class="form-group col-sm-4"><label lang="en">Name</label></div>
+                        <div class="form-group col-sm-8 phat_tu_name-container"/>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4"><label lang="en">Phap danh</label></div>
+                        <div class="form-group col-sm-8 phat_tu_phap_danh-container"/>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4"><label lang="en">Phone</label></div>
+                        <div class="form-group col-sm-8 phat_tu_phone-container"/>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4"><label lang="en">Email</label></div>
+                        <div class="form-group col-sm-8 phat_tu_email-container"/>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <div autoload="button" attribute="choose_pt_button" class="btn-group pull-left" role="group" aria-label="..."/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="single_select" attribute="muc_cung_duong"/>
+                <div class="form-group col-sm-6" autoload="date_picker" attribute="date"/>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="text_input" attribute="tinh_tai_vat"/>
+                <div class="form-group col-sm-6" autoload="text_input" attribute="qui_doi"/>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-12" autoload="text_input" attribute="ghi_chu"/>
+            </div>
+            <div class="btn-toolbar" role="toolbar" aria-label="...">
+                <div autoload="button" attribute="save_cd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+                <div autoload="button" attribute="cancel_cd_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            </div>
+        </form>
+    </div>
+</div>
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
        var _this = {};
+       var _mucCungDuongSelect;
+       globalControl.autoLoadForm($(tag), {
+           cung_duong_grid: {
+               identifier: "id",
+               headerObj: {
+                   'id': "Id",
+                   'phat_tu_name': "Name",
+                   'phat_tu_phap_danh': "Phap danh",
+                   'phat_tu_phone': "Phone",
+                   'phat_tu_email': "Email",
+                   'muc_cung_duong': "Muc Cung Duong",
+                   'date': "Date",
+                   'tinh_tai_vat': "Tinh tai/ Tinh vat",
+                   'qui_doi': "Qui doi",
+                   'ghi_chu': "Ghi chu"
+               },
+               dataUrl: '/cung_duong/list',
+               selection: 'single'
+           },
+           create_cd_button: {
+               label: "Create cung duong",
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       $(tag).filter("div.cung_duong_list-panel").hide();
+                       $(tag).filter("div.cung_duong_info-panel").show();
+                       _loadCungDuongForm(-1);
+                   });
+               }
+           },
+           edit_cd_button: {
+               label: "Edit cung duong",
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
+                       if (ids.length != 1)
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please select one row to delete."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       else {
+                           $(tag).filter("div.cung_duong_list-panel").hide();
+                           $(tag).filter("div.cung_duong_info-panel").show();
+                           _loadCungDuongForm(ids[0]);
+                       }
+                   });
+               }
+           },
+           delete_cd_button: {
+               label: "Delete cung duong",
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
+                       if (ids.length != 1)
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please select one row to delete."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       else
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Are you sure you want to delete this cung duong?"),
+                               buttons: {
+                                   yes: {
+                                       label: globalControl.lang.translate("Yes"),
+                                       className: "btn",
+                                       callback: function() {
+                                           globalControl.doAjax("/cung_duong/delete", {id:ids[0]}, function(data) {
+                                               $(tag).find("div.table-responsive > table").bootgrid("reload");
+                                           });
+                                       }
+                                   },
+                                   no: {
+                                       label: globalControl.lang.translate("No"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                   });
+               }
+           },
+           choose_pt_button: {
+               label: "Choose phat tu",
+               callback: function(btTag) {
+                   // TODO onclick
+               }
+           },
+           muc_cung_duong: {
+               label: "Muc cung duong",
+               name: "muc_cung_duong_id",
+               enableInput: true,
+               callback: function(selectControl) {
+                   _mucCungDuongSelect = selectControl;
+               }
+           },
+           date: { label: "Date", name: "date" },
+           tinh_tai_vat: { label: "Tinh tai/ Tinh vat", name: "tinh_tai_vat" },
+           qui_doi: { label: "Qui doi", name: "qui_doi" },
+           ghi_chu: { label: "Ghi chu", name: "ghi_chu" },
+           save_cd_button: {
+               label: "Save cung duong",
+               callback: function(btTag) {
+                   // TODO onclick
+               }
+           },
+           cancel_cd_button: {
+               label: "Cancel",
+               callback: function(btTag) {
+                   $(btTag).filter("button").click(function() {
+                       $(tag).filter("div.cung_duong_list-panel").show();
+                       $(tag).filter("div.cung_duong_info-panel").hide();
+                   });
+               }
+           }
+       });
+       $(tag).filter("div.cung_duong_list-panel").show();
+       $(tag).filter("div.cung_duong_info-panel").hide();
+       // Load muc cung duong select
+       var _loadMucCungDuongSelect = function(callback) {
+           globalControl.doAjax("/muc_cung_duong/list", {}, function(data) {
+               var selOptions = {};
+               $.each(data.rows, function(idx, val) {
+                   selOptions[val.id] = val.name;
+               });
+               _mucCungDuongSelect.loadOptions(selOptions);
+               if (typeof(callback) == 'function')
+                   callback();
+           });
+       };
+       // load phat tu form
+       var _loadPhatTuInfo = function(id) {
+           if (-1 == id) {
+               $(tag).find("form.cung_duong_info-form div.phat_tu_name-container").text('');
+               $(tag).find("form.cung_duong_info-form div.phat_tu_phap_danh-container").text('');
+               $(tag).find("form.cung_duong_info-form div.phat_tu_phone-container").text('');
+               $(tag).find("form.cung_duong_info-form div.phat_tu_email-container").text('');
+           } else {
+               globalControl.doAjax('/phat_tu/get', {'id':id}, function(data) {
+                   $(tag).find("form.cung_duong_info-form div.phat_tu_name-container").text(data.name);
+                   $(tag).find("form.cung_duong_info-form div.phat_tu_phap_danh-container").text(data.phap_danh);
+                   $(tag).find("form.cung_duong_info-form div.phat_tu_phone-container").text(data.phone);
+                   $(tag).find("form.cung_duong_info-form div.phat_tu_email-container").text(data.email);
+               });
+           }
+           $(tag).find("form.cung_duong_info-form input[name='phat_tu_id']").val(id);
+       };
+       // load cung duong form
+       var _loadCungDuongForm = function(id) {
+           if (id == -1) {
+               _loadPhatTuInfo(-1);
+               _loadMucCungDuongSelect();
+               $(tag).find("form.cung_duong_info-form input").val('');
+           } else {
+               globalControl.doAjax('/cung_duong/get', {'id':id}, function(data) {
+                   _loadPhatTuInfo(data.phat_tu_id);
+                   _loadMucCungDuongSelect(function() {
+                       mucCungDuongSelect.select().select2('val', data.muc_cung_duong_id);
+                   });
+                   $(tag).find("form.cung_duong_info-form input[name='date']").val(moment(data.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+                   $(tag).find("form.cung_duong_info-form input[name='tinh_tai_vat']").val(data.tinh_tai_vat);
+                   $(tag).find("form.cung_duong_info-form input[name='qui_doi']").val(data.qui_doi);
+                   $(tag).find("form.cung_duong_info-form input[name='ghi_chu']").val(data.ghi_chu);
+               });
+           }
+           $(tag).find("form.cung_duong_info-form input[name='phat_tu_id']").val(id);
+       };
        if (typeof(options.callback) == 'function')
            options.callback(_this);
    }

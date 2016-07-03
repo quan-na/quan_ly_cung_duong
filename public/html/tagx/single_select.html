@@ -5,6 +5,7 @@
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
+       var _this = {};
        //  <option value="volvo">Volvo</option>
        if (typeof(options.label) == 'string')
            $(tag).filter("label").text(globalControl.lang.translate(options.label));
@@ -12,19 +13,43 @@
            $(tag).find("select").attr('name', options.name);
        if (options.multiple)
            $(tag).find("select").attr('multiple', 'multiple');
-       // options and values
+       // options and values TODO prevent html code
        if (typeof(options.options) == 'object')
            $.each(options.options, function (idx, val) {
-               $("<option lang='en' value='"+idx+"'>"+val+"</option>").appendTo($(tag).find("select"));
+               $("<option lang='en'></option>").appendTo($(tag).find("select")).val(idx).text(val);
            });
-       // TODO optionUrl
-       // TODO manual input
+       // load options manually
+       _this.loadOptions = function(selOptions) {
+           $(tag).find("select").empty();
+           $.each(selOptions, function (idx, val) {
+               $("<option lang='en'></option>").appendTo($(tag).find("select")).val(idx).text(val);
+           });
+       };
+       // get select tag
+       _this.select = function() {
+           return $(tag).find("select");
+       };
        // TODO multiple select values
        if (typeof(options.value) == 'string')
            $(tag).find("select").children("option[value="+options.value+"]").attr("selected", "selected");
-       $(tag).find("select").select2({
-           placeholder: "-", // TODO use text
-           allowClear: true
-       });
+       var select2Option = {};
+       if (typeof(options.placeholder) == 'string') {
+           select2Option.placeholder = options.placeholder;
+           select2option.allowClear = true;
+       }
+       // TODO manual input
+       if (options.enableInput) {
+           select2Option.tags = true;
+           select2Option.tokenSeparators = [','];
+           if (typeof(options.onInput) == "function")
+               $(tag).find("select").change(function(e) {
+                   $(this).find('[data-select2-tag="true"]').each(function(idx, ele) {
+                       options.onInput($(ele).val());
+                   });
+               });
+       }
+       $(tag).find("select").select2(select2Option);
+       if (typeof(options.callback)=='function')
+           options.callback(_this);
    }
 //</script>
