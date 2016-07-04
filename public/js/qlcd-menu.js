@@ -1,13 +1,5 @@
 (function() {
     globalControl.assignMenuActions({
-        'create_cung_duong': function() {
-            if ($("div.create_cung_duong-view").length == 0) {
-                var theDiv = $("<div class='container create_cung_duong-view'/>").insertAfter($("div.home-view"));
-                globalControl.loadControl("/html/form/create_cung_duong.html", theDiv, {});
-            }
-            $("body").children("div.container").addClass("hidden");
-            $("body").children("div.create_cung_duong-view").removeClass("hidden");
-        },
         'list_cung_duong': function() {
             if ($("div.list_cung_duong-view").length == 0) {
                 var theDiv = $("<div class='container list_cung_duong-view'/>").insertAfter($("div.home-view"));

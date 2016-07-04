@@ -15,9 +15,9 @@
        if (typeof(options.headerObj) == 'object')
            $.each(options.headerObj, function(idx, val) {
                if (idx == idColKey)
-                   $("<th data-column-id=\""+idx+"\" data-identifier=\"true\">"+val+"</th>").appendTo($(tag).find("thead > tr"));
+                   $("<th data-identifier=\"true\"></th>").appendTo($(tag).find("thead > tr")).attr('data-column-id',idx).text(globalControl.lang.translate(val));
                else
-                   $("<th data-column-id=\""+idx+"\">"+val+"</th>").appendTo($(tag).find("thead > tr"));
+                   $("<th></th>").appendTo($(tag).find("thead > tr")).attr('data-column-id',idx).text(globalControl.lang.translate(val));
            });
        // TODO header url
        // Load data
