@@ -70,30 +70,56 @@ class CungDuongController {
     public function cungDuongSave($request, $response, $args) {
         $returnObj = array();
         $parsedBody = $request->getParsedBody();
-        $this->ci->logger->addInfo('--- Phat tu save request received : ' . json_encode($parsedBody));
+        $this->ci->logger->addInfo('--- Cung duong save request received : ' . json_encode($parsedBody));
         // validate
-        if (!($parsedBody['name'] or $parsedBody['phap_danh'])) {
+        if (!$parsedBody['tinh_tai_vat'] or !$parsedBody['qui_doi'] or !$parsedBody['date'] or $parsedBody['phat_tu_id'] == '-1') {
             $returnObj['result'] = 'error';
-            $returnObj['message'] = 'Name or Phap danh is required.';
+            $returnObj['message'] = 'Required fields are missing.';
         } else {
             if (0 > $parsedBody['id']) {
-                $insertStatement = $this->ci->db->insert(array('name', 'phap_danh', 'phone', 'email',
+                // check muc cung duong
+                if (!ctype_digit($parsedBody['muc_cung_duong_id'])) {
+                    $mcdInsertStmt = $this->ci->db->insert(array('name',
+                                                                 'ar_owner', 'ar_group_level', 'ar_user', 'ar_group', 'ar_other'))
+                                          ->into('muc_cung_duong')
+                                          ->values(array($parsedBody['muc_cung_duong_id'],
+                                                         $_SESSION['username'], $_SESSION['group_level'], 3, 2, 0));
+                    $mcdInsertedId = $mcdInsertStmt->execute(true);
+                    $parsedBody['muc_cung_duong_id'] = $mcdInsertedId;
+                }
+                // parse date
+                $parsedBody['date'] = \DateTime::createFromFormat('d/m/Y', $parsedBody['date'])->format('Y-m-d');
+                $insertStatement = $this->ci->db->insert(array('phat_tu_id', 'muc_cung_duong_id', 'date', 'tinh_tai_vat', 'qui_doi', 'ghi_chu',
                                                                'ar_owner', 'ar_group_level', 'ar_user', 'ar_group', 'ar_other'))
-                                        ->into('phat_tu')
-                                        ->values(array($parsedBody['name'],
-                                                       $parsedBody['phap_danh'],
-                                                       $parsedBody['phone'],
-                                                       $parsedBody['email'],
+                                        ->into('cung_duong')
+                                        ->values(array($parsedBody['phat_tu_id'],
+                                                       $parsedBody['muc_cung_duong_id'],
+                                                       $parsedBody['date'],
+                                                       $parsedBody['tinh_tai_vat'],
+                                                       $parsedBody['qui_doi'],
+                                                       $parsedBody['ghi_chu'],
                                                        $_SESSION['username'], $_SESSION['group_level'], 3, 2, 0));
                 $insertId = $insertStatement->execute(false);
                 $returnObj['result'] = 'ok';
                 $returnObj['id'] = $insertId;
             } else {
-                $updateStatement = $this->ci->db->update(array('name' => $parsedBody['name'],
-                                                               'phap_danh' => $parsedBody['phap_danh'],
-                                                               'phone' => $parsedBody['phone'],
-                                                               'email' => $parsedBody['email']))
-                                        ->table('phat_tu')
+                // check muc cung duong
+                if (!ctype_digit($parsedBody['muc_cung_duong_id'])) {
+                    $mcdInsertStmt = $this->ci->db->insert(array('name'))
+                                          ->into('muc_cung_duong')
+                                          ->values(array($parsedBody['muc_cung_duong_id']));
+                    $mcdInsertedId = $mcdInsertStmt->execute(true);
+                    $parsedBody['muc_cung_duong_id'] = $mcdInsertedId;
+                }
+                // parse date
+                $parsedBody['date'] = \DateTime::createFromFormat('d/m/Y', $parsedBody['date'])->format('Y-m-d');
+                $updateStatement = $this->ci->db->update(array('phat_tu_id' => $parsedBody['phat_tu_id'],
+                                                               'muc_cung_duong_id' => $parsedBody['muc_cung_duong_id'],
+                                                               'date' => $parsedBody['date'],
+                                                               'tinh_tai_vat' => $parsedBody['tinh_tai_vat'],
+                                                               'qui_doi' => $parsedBody['qui_doi'],
+                                                               'ghi_chu' => $parsedBody['ghi_chu']))
+                                        ->table('cung_duong')
                                         ->where('id', '=', $parsedBody['id']);
                 $rows = $updateStatement->execute();
                 $returnObj['result'] = 'ok';

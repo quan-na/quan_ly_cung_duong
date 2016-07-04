@@ -74,6 +74,7 @@ $app->post('/muc_cung_duong/save', '\MucCungDuongController:mucCungDuongSave');
 $app->post('/cung_duong/list', '\CungDuongController:cungDuongList');
 $app->post('/cung_duong/delete', '\CungDuongController:cungDuongDelete');
 $app->post('/cung_duong/get', '\CungDuongController:cungDuongGet');
+$app->post('/cung_duong/save', '\CungDuongController:cungDuongSave');
 
 $app->run();
 ?>

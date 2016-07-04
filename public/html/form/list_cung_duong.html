@@ -188,7 +188,62 @@
            save_cd_button: {
                label: "Save cung duong",
                callback: function(btTag) {
-                   // TODO onclick
+                   $(btTag).filter("button").click(function() {
+                       var form = $(tag).find("form.cung_duong_info-form").serializeObject();
+                       if (form['phat_tu_id'] == -1) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please choose phat tu."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                           return;
+                       }
+                       if (!form['date']) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please pick a date."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                           return;
+                       }
+                       if (!form['tinh_tai_vat']) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please input Tinh tai/ Tinh vat."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                           return;
+                       }
+                       if (! /^\d+$/.test(form['qui_doi'])) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please input qui doi as number."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                           return;
+                       }
+                       globalControl.doAjax('/cung_duong/save', form, function(data) {
+                           $(tag).find("div.table-responsive > table").bootgrid("reload");
+                           $(tag).filter("div.cung_duong_list-panel").show();
+                           $(tag).filter("div.cung_duong_info-panel").hide();
+                       });
+                   });
                }
            },
            cancel_cd_button: {
@@ -237,7 +292,10 @@
            if (id == -1) {
                _loadPhatTuInfo(-1);
                _loadMucCungDuongSelect();
-               $(tag).find("form.cung_duong_info-form input").val('');
+               $(tag).find("form.cung_duong_info-form input[name='date']").val('');
+               $(tag).find("form.cung_duong_info-form input[name='tinh_tai_vat']").val('');
+               $(tag).find("form.cung_duong_info-form input[name='qui_doi']").val('');
+               $(tag).find("form.cung_duong_info-form input[name='ghi_chu']").val('');
            } else {
                globalControl.doAjax('/cung_duong/get', {'id':id}, function(data) {
                    _loadPhatTuInfo(data.phat_tu_id);
@@ -250,7 +308,7 @@
                    $(tag).find("form.cung_duong_info-form input[name='ghi_chu']").val(data.ghi_chu);
                });
            }
-           $(tag).find("form.cung_duong_info-form input[name='phat_tu_id']").val(id);
+           $(tag).find("form.cung_duong_info-form input[name='id']").val(id);
        };
        if (typeof(options.callback) == 'function')
            options.callback(_this);
