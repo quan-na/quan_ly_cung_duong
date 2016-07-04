@@ -31,4 +31,7 @@ RUN a2enmod rewrite
 RUN a2dissite 000-default
 RUN a2ensite 001-qlcd
 
+RUN sed -i -e "s/variables_order = \"GPCS\"/variables_order = \"EGPCS\"/g" /etc/php5/cli/php.ini
+RUN sed -i -e "s/variables_order = \"GPCS\"/variables_order = \"EGPCS\"/g" /etc/php5/apache2/php.ini
+
 EXPOSE 80

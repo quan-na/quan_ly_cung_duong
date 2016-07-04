@@ -4,7 +4,7 @@ return [
         'displayErrorDetails' => true,
 
         'db' => [
-            'host'      => '192.168.56.1',
+            'host'      => 'qlcd-mysql',
             'user'      => 'root',
             'password'  => 'root',
             'dbname'    => 'quan_ly_cd',
