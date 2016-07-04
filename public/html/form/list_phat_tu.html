@@ -9,6 +9,9 @@
             <div autoload="button" attribute="create_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
             <div autoload="button" attribute="edit_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
             <div autoload="button" attribute="delete_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+        </div>
+        <div class="btn-toolbar choose_bt-container" role="toolbar" aria-label="...">
+            <div autoload="button" attribute="cancel_choose_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
             <div autoload="button" attribute="choose_pt_button" class="btn-group pull-right" role="group" aria-label="..."></div>
         </div>
     </div>
@@ -16,7 +19,7 @@
 <div class="panel panel-default phat_tu_info-panel">
     <div class="panel-heading" lang="en">Phat tu</div>
     <div class="panel-body">
-        <form role="form" class="phat_tu_info-form">
+        <form role="form" class="phat_tu_info-form" onsubmit="return false;">
             <input type="hidden" name="id"/>
             <div class="row">
                 <div class="form-group col-sm-6" autoload="text_input" attribute="name"/>
@@ -37,8 +40,8 @@
 //<script type='text/javascript'>
    function ( tag, options ) {
        var _this = {};
-       var _buttons = {};
        var _selectCallback = function() {};
+       var _choosePtButton;
        globalControl.autoLoadForm($(tag), {
            phat_tu_grid: {
                identifier: 'id',
@@ -55,7 +58,6 @@
            create_pt_button: {
                label: "Create phat tu",
                callback: function(btTag) {
-                   _buttons['create'] = $(btTag);
                    $(btTag).filter("button").click(function() {                       
                        $(tag).filter("div.phat_tu_list-panel").hide();
                        $(tag).filter("div.phat_tu_info-panel").show();
@@ -67,7 +69,6 @@
            edit_pt_button: {
                label: "Edit phat tu",
                callback: function(btTag) {
-                   _buttons['edit'] = $(btTag);
                    $(btTag).filter("button").click(function() {
                        var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
                        if (ids.length != 1)
@@ -92,7 +93,6 @@
            delete_pt_button: {
                label: "Delete phat tu",
                callback: function(btTag) {
-                   _buttons['delete'] = $(btTag);
                    $(btTag).filter("button").click(function() {
                        var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
                        if (ids.length != 1)
@@ -130,8 +130,8 @@
            choose_pt_button: {
                label: "Choose phat tu",
                callback: function(btTag) {
-                   _buttons['choose'] = $(btTag).hide();
-                   // onlick
+                   _choosePtButton = $(btTag);
+                   $("div.choose_bt-container").hide();
                    $(btTag).filter("button").click(function() {
                        var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
                        if (ids.length != 1)
@@ -146,8 +146,18 @@
                            });
                        else {
                            _selectCallback(ids[0]);
-                           _this.initialiaze("");
+                           _this.initialize("");
                        }
+                   });
+               }
+           },
+           cancel_choose_pt_button: {
+               label: "Cancel",
+               callback: function(btTag) {
+                   $("div.choose_bt-container").hide();
+                   $(btTag).filter("button").click(function() {
+                       _selectCallback(-1);
+                       _this.initialize("");
                    });
                }
            },
@@ -196,10 +206,10 @@
            $(tag).filter("div.phat_tu_list-panel").show();
            $(tag).filter("div.phat_tu_info-panel").hide();
            if (selectButtonLabel == "") {
-               _buttons['choose'].hide();
+               $("div.choose_bt-container").hide();
            } else {
-               _buttons['choose'].show().filter("button")
-                                 .text(globalControl.lang.translate(selectButtonLabel));
+               $("div.choose_bt-container").show();
+               _choosePtButton.filter("button").text(globalControl.lang.translate(selectButtonLabel));
                _selectCallback = selectButtonCallback;
            }
        };

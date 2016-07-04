@@ -1,12 +1,39 @@
 (function() {
+    var _listPhatTuControl;
+    var _listCungDuongControl;
     globalControl.assignMenuActions({
         'list_cung_duong': function() {
             if ($("div.list_cung_duong-view").length == 0) {
-                var theDiv = $("<div class='container list_cung_duong-view'/>").insertAfter($("div.home-view"));
-                globalControl.loadControl("/html/form/list_cung_duong.html", theDiv, {});
+                if ($("div.list_phat_tu-view").length == 0) {
+                    var otherDiv = $("<div class='container list_phat_tu-view'/>").insertAfter($("div.home-view"));
+                    globalControl.loadControl("/html/form/list_phat_tu.html", otherDiv, {
+                        callback: function(control) {
+                            _listPhatTuControl = control;
+                            var theDiv = $("<div class='container list_cung_duong-view'/>").insertAfter($("div.home-view"));
+                            globalControl.loadControl("/html/form/list_cung_duong.html", theDiv, {
+                                listPhatTuControl: _listPhatTuControl,
+                                callback: function(cdControl) {
+                                    _listCungDuongControl = cdControl;
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    var theDiv = $("<div class='container list_cung_duong-view'/>").insertAfter($("div.home-view"));
+                    globalControl.loadControl("/html/form/list_cung_duong.html", theDiv, {
+                        listPhatTuControl: _listPhatTuControl,
+                        callback: function(cdControl) {
+                            _listCungDuongControl = cdControl;
+                        }
+                    });
+                }
             }
+            // check if phat tu is being chosen
             $("body").children("div.container").addClass("hidden");
-            $("body").children("div.list_cung_duong-view").removeClass("hidden");
+            if (_listCungDuongControl && _listCungDuongControl.isBeingChosen())
+                $("body").children("div.list_phat_tu-view").removeClass("hidden");
+            else
+                $("body").children("div.list_cung_duong-view").removeClass("hidden");
         },
         'list_muc_cung_duong': function() {
             if ($("div.list_muc_cung_duong-view").length == 0) {
@@ -19,7 +46,11 @@
         'list_phat_tu': function() {
             if ($("div.list_phat_tu-view").length == 0) {
                 var theDiv = $("<div class='container list_phat_tu-view'/>").insertAfter($("div.home-view"));
-                globalControl.loadControl("/html/form/list_phat_tu.html", theDiv, {});
+                globalControl.loadControl("/html/form/list_phat_tu.html", theDiv, {
+                    callback: function(control) {
+                        _listPhatTuControl = control;
+                    }
+                });
             }
             $("body").children("div.container").addClass("hidden");
             $("body").children("div.list_phat_tu-view").removeClass("hidden");

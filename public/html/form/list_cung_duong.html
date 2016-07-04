@@ -15,7 +15,7 @@
 <div class="panel panel-default cung_duong_info-panel">
     <div class="panel-heading" lang="en">Cung duong</div>
     <div class="panel-body">
-        <form role="form" class="cung_duong_info-form">
+        <form role="form" class="cung_duong_info-form" onsubmit="return false;">
             <input type="hidden" name="id"/>
             <div class="row">
                 <input type="hidden" name="phat_tu_id"/>
@@ -64,6 +64,10 @@
    function ( tag, options ) {
        var _this = {};
        var _mucCungDuongSelect;
+       var _isBeingChosen = false;
+       _this.isBeingChosen = function() {
+           return _isBeingChosen;
+       };
        globalControl.autoLoadForm($(tag), {
            cung_duong_grid: {
                identifier: "id",
@@ -155,7 +159,18 @@
            choose_pt_button: {
                label: "Choose phat tu",
                callback: function(btTag) {
-                   // TODO onclick
+                   $(btTag).filter("button").click(function() {
+                       _isBeingChosen = true;
+                       $("body").children("div.container").addClass("hidden");
+                       $("body").children("div.list_phat_tu-view").removeClass("hidden");
+                       options.listPhatTuControl.initialize('Choose for cung duong input', function(id) {
+                           _isBeingChosen = false;
+                           if (id != -1)
+                               _loadPhatTuInfo(id);
+                           $("body").children("div.container").addClass("hidden");
+                           $("body").children("div.list_cung_duong-view").removeClass("hidden");
+                       });
+                   });
                }
            },
            muc_cung_duong: {
