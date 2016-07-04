@@ -17,7 +17,7 @@ class CungDuongController {
         $statement = $this->ci->db->select(array('cung_duong.id',
                                                  'phat_tu.name as phat_tu_name','phap_danh as phat_tu_phap_danh','phone as phat_tu_phone','email as phat_tu_email',
                                                  'muc_cung_duong.name as muc_cung_duong',
-                                                 'date','tinh_tai_vat','qui_doi','ghi_chu'))
+                                                 "DATE_FORMAT(date,'%d/%m/%Y') AS date",'tinh_tai_vat','qui_doi','ghi_chu'))
                           ->from('cung_duong')
                           ->join('phat_tu', 'cung_duong.phat_tu_id', '=', 'phat_tu.id')
                           ->join('muc_cung_duong', 'cung_duong.muc_cung_duong_id', '=', 'muc_cung_duong.id')
