@@ -300,7 +300,7 @@
                globalControl.doAjax('/cung_duong/get', {'id':id}, function(data) {
                    _loadPhatTuInfo(data.phat_tu_id);
                    _loadMucCungDuongSelect(function() {
-                       mucCungDuongSelect.select().select2('val', data.muc_cung_duong_id);
+                       _mucCungDuongSelect.select().select2('val', data.muc_cung_duong_id);
                    });
                    $(tag).find("form.cung_duong_info-form input[name='date']").val(moment(data.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
                    $(tag).find("form.cung_duong_info-form input[name='tinh_tai_vat']").val(data.tinh_tai_vat);
