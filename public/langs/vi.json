@@ -60,7 +60,17 @@
       "Are you sure you want to delete this phat tu?":"Bạn có chắc chắn muốn xoá phật tử này không?",
       "Save phat tu":"Lưu phật tử",
       "Name or Phap danh is required.":"Xin nhập tên hay pháp danh.",
-      "Please select one row to choose.":"Xin hãy chọn một dòng để tiếp tục."
+      "Please select one row to choose.":"Xin hãy chọn một dòng để tiếp tục.",
+    "__6":"Change password form",
+      "Display name":"Tên hiển thị",
+      "Change password":"Đổi mật khẩu",
+      "Old password":"Mật khẩu cũ",
+      "New password":"Mật khẩu mới",
+      "Retype password":"Mật khẩu nhập lại",
+      "Save password":"Lưu mật khẩu",
+      "All three passwords are required.":"Xin nhập đủ ba mật khẩu.",
+      "Retype Password is not matched.":"Mật khẩu nhập lại không khớp.",
+      "Old password is not matched.":"Mật khẩu cũ không khớp."
 	},
 	"regex": []
 }
