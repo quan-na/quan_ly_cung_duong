@@ -61,7 +61,6 @@ $app->post('/logout', function (Request $request, Response $response) {
 $app->post('/menu/list', '\MenuController:menuList');
 
 $app->post('/phat_tu/list', '\PhatTuController:phatTuList');
-// $app->post('/phat_tu/create', '\PhatTuController:phatTuCreate');
 $app->post('/phat_tu/delete', '\PhatTuController:phatTuDelete');
 $app->post('/phat_tu/get', '\PhatTuController:phatTuGet');
 $app->post('/phat_tu/save', '\PhatTuController:phatTuSave');
@@ -75,6 +74,9 @@ $app->post('/cung_duong/list', '\CungDuongController:cungDuongList');
 $app->post('/cung_duong/delete', '\CungDuongController:cungDuongDelete');
 $app->post('/cung_duong/get', '\CungDuongController:cungDuongGet');
 $app->post('/cung_duong/save', '\CungDuongController:cungDuongSave');
+
+$app->post('/user/get_current', '\UserController:userGetCurrent');
+$app->post('/user/change_password', '\UserController:userChangePassword');
 
 $app->run();
 ?>

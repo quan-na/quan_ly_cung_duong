@@ -9,7 +9,7 @@
             </div>
             <div class="form-group col-sm-6">
                 <label lang="en">Display name</label>
-                <div class="text-view" attribute="username"/>
+                <div class="text-view" attribute="displayName"/>
             </div>
         </div>
         <div class="btn-toolbar" role="toolbar" aria-label="...">
@@ -47,6 +47,7 @@
                    $(btTag).filter("button").click(function() {
                        $(tag).filter("div.user_view-panel").hide();
                        $(tag).filter("div.user_edit-panel").show();
+                       $(tag).find("form.user_edit-form input").val('');
                    });
                }
            },
@@ -57,7 +58,45 @@
                label: "Save password",
                callback: function(btTag) {
                    $(btTag).filter("button").click(function() {
-                       // TODO save password
+                       var form = $(tag).find("form.user_edit-form").serializeObject();
+                       if (!form['oldPassword'] || !form['newPassword'] || !form['retypePassword']) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("All three passwords are required."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       } else if (form['newPassword'] != form['retypePassword']) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Retype Password is not matched."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                       } else {
+                           globalControl.doAjax('/user/change_password', form, function(data) {
+                               if (data.result == 'ok') {
+                                   $(tag).filter("div.user_view-panel").show();
+                                   $(tag).filter("div.user_edit-panel").hide();
+                               } else {
+                                   bootbox.dialog({
+                                       message: globalControl.lang.translate(data.message),
+                                       buttons: {
+                                           ok: {
+                                               label: globalControl.lang.translate("OK"),
+                                               className: "btn"
+                                           }
+                                       }
+                                   });
+                               }
+                           });
+                       }
                    });
                }
            },
@@ -73,5 +112,9 @@
        });
        $(tag).filter("div.user_view-panel").show();
        $(tag).filter("div.user_edit-panel").hide();
+       globalControl.doAjax('/user/get_current', {}, function(data) {
+           $(tag).find("div.text-view[attribute='username']").text(data.username);
+           $(tag).find("div.text-view[attribute='displayName']").text(data.display_name);
+       });
    }
 //</script>
