@@ -3,14 +3,14 @@
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
-       //  for="email", Email address:
-       //  id="email", name, value
-       // TODO check if without id it will work or not
+       // TODO password input
        if (typeof(options.label) == 'string')
            $(tag).filter("label").text(globalControl.lang.translate(options.label));
        if (typeof(options.name) == 'string')
            $(tag).filter("input").attr('name', options.name);
        if (typeof(options.value) != 'undefined')
            $(tag).filter("input").val(options.value);
+       if (options.password)
+           $(tao).filter("input").attr('type', 'password');
    }
 //</script>
