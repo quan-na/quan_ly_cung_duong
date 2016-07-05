@@ -22,8 +22,8 @@ class PhatTuController {
         $countStatement = $this->ci->db->select(array('id'))->count()->from('phat_tu');
         // filter by keyword
         if (!empty($parsedBody['searchPhrase'])) {
-            $statement->where("CONCAT(id,'#',CONCAT_WS(',',name,phap_danh,phone,email))", 'LIKE', '%' . $parsedBody['searchPhrase'] . '%');
-            $countStatement->where("CONCAT(id,'#',CONCAT_WS(',',id,name,phap_danh,phone,email))", 'LIKE', '%' . $parsedBody['searchPhrase'] . '%');
+            $statement->where("CONCAT('#',id,'#',CONCAT_WS(',',name,phap_danh,phone,email))", 'LIKE', '%' . str_replace(' ', '%', $parsedBody['searchPhrase']) . '%');
+            $countStatement->where("CONCAT('#',id,'#',CONCAT_WS(',',id,name,phap_danh,phone,email))", 'LIKE', '%' . str_replace(' ', '%', $parsedBody['searchPhrase']) . '%');
         }
         // TODO filter by permission
         // filter with form

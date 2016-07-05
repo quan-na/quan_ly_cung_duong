@@ -31,9 +31,9 @@ class CungDuongController {
                                ->join('muc_cung_duong', 'cung_duong.muc_cung_duong_id', '=', 'muc_cung_duong.id');
         // filter by keyword
         if (!empty($parsedBody['searchPhrase'])) {
-            // TODO parse search phrase
-            $statement->where("CONCAT(cung_duong.id,'#',CONCAT_WS(',',phat_tu.name,phap_danh,phone,email,muc_cung_duong.name, DATE_FORMAT(date,'%d/%m/%Y'),tinh_tai_vat,qui_doi,ghi_chu))", 'LIKE', '%' . $parsedBody['searchPhrase'] . '%');
-            $countStatement->where("CONCAT(cung_duong.id,'#',CONCAT_WS(',',phat_tu.name,phap_danh,phone,email,muc_cung_duong.name, DATE_FORMAT(date,'%d/%m/%Y'),tinh_tai_vat,qui_doi,ghi_chu))", 'LIKE', '%' . $parsedBody['searchPhrase'] . '%');
+            // parse search phrase
+            $statement->where("CONCAT('#',cung_duong.id,'#',CONCAT_WS(',',phat_tu.name,phap_danh,phone,email,muc_cung_duong.name, DATE_FORMAT(date,'%d/%m/%Y'),tinh_tai_vat,qui_doi,ghi_chu))", 'LIKE', '%' . str_replace(' ', '%', $parsedBody['searchPhrase']) . '%');
+            $countStatement->where("CONCAT('#',cung_duong.id,'#',CONCAT_WS(',',phat_tu.name,phap_danh,phone,email,muc_cung_duong.name, DATE_FORMAT(date,'%d/%m/%Y'),tinh_tai_vat,qui_doi,ghi_chu))", 'LIKE', '%' . str_replace(' ', '%', $parsedBody['searchPhrase']) . '%');
         }
         // TODO filter by permission
         $pdoStatement = $statement->execute();

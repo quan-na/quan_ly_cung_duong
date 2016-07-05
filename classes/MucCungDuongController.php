@@ -22,8 +22,8 @@ class MucCungDuongController {
         $countStatement = $this->ci->db->select(array('id'))->count()->from('muc_cung_duong');
         // filter by keyword
         if (!empty($parsedBody['searchPhrase'])) {
-            $statement->where("CONCAT(id,'#',name)", 'LIKE', '%' . $parsedBody['searchPhrase'] . '%');
-            $countStatement->where("CONCAT(id,'#',name)", 'LIKE', '%' . $parsedBody['searchPhrase'] . '%');
+            $statement->where("CONCAT('#',id,'#',name)", 'LIKE', '%' . str_replace(' ', '%', $parsedBody['searchPhrase']) . '%');
+            $countStatement->where("CONCAT('#',id,'#',name)", 'LIKE', '%' . str_replace(' ', '%', $parsedBody['searchPhrase']) . '%');
         }
         $pdoStatement = $statement->execute();
         $countPdoStatement = $countStatement->execute();
