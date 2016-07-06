@@ -55,6 +55,14 @@
             $("body").children("div.container").addClass("hidden");
             $("body").children("div.list_phat_tu-view").removeClass("hidden");
         },
+        'report_cung_duong': function() {
+            if ($("div.report_cung_duong-view").length == 0) {
+                var theDiv = $("<div class='container report_cung_duong-view'/>").insertAfter($("div.home-view"));
+                globalControl.loadControl("/html/form/report_cung_duong.html", theDiv, {});
+            }
+            $("body").children("div.container").addClass("hidden");
+            $("body").children("div.report_cung_duong-view").removeClass("hidden");
+        },
         'user_info': function() {
             if ($("div.user_info-view").length == 0) {
                 var theDiv = $("<div class='container user_info-view'/>").insertAfter($("div.home-view"));

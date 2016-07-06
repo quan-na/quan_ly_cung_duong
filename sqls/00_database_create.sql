@@ -73,14 +73,24 @@ create table menu_item (
     ar_other smallint not null default 0
 ) CHARSET utf8 COLLATE utf8_vietnamese_ci;
 
-INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`) VALUES ('cung_duong',1,'Cung duong',NULL,'admin',10,3,1,0);
-INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`) VALUES ('list_cung_duong',11,'List cung duong','cung_duong','admin',100,3,1,0);
-INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`) VALUES ('list_muc_cung_duong',12,'List muc cung duong','cung_duong','admin',100,3,1,0);
-INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`) VALUES ('list_phat_tu',13,'List phat tu','cung_duong','admin',100,3,1,0);
-INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`) VALUES ('list_user',22,'List user','user','admin',0,3,1,0);
-INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`) VALUES ('logout',23,'Logout','user','admin',100,3,1,0);
-INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`) VALUES ('user',2,'User',NULL,'admin',100,3,1,0);
-INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`) VALUES ('user_info',21,'User info','user','admin',100,3,1,0);
+INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`)
+  VALUES ('cung_duong',1,'Cung duong',NULL,'admin',10,3,1,0);
+INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`)
+  VALUES ('list_cung_duong',11,'List cung duong','cung_duong','admin',100,3,1,0);
+INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`)
+  VALUES ('list_muc_cung_duong',12,'List muc cung duong','cung_duong','admin',100,3,1,0);
+INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`)
+  VALUES ('list_phat_tu',13,'List phat tu','cung_duong','admin',100,3,1,0);
+INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`)
+  VALUES ('report_cung_duong',14,'Report cung duong','cung_duong','admin',100,3,1,0);
+INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`)
+  VALUES ('list_user',22,'List user','user','admin',0,3,1,0);
+INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`)
+  VALUES ('logout',23,'Logout','user','admin',100,3,1,0);
+INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`)
+  VALUES ('user',2,'User',NULL,'admin',100,3,1,0);
+INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`)
+  VALUES ('user_info',21,'User info','user','admin',100,3,1,0);
 
 create table phat_tu (
 	id bigint not null primary key auto_increment,
