@@ -292,7 +292,7 @@
            if (id == -1) {
                _loadPhatTuInfo(-1);
                _loadMucCungDuongSelect();
-               $(tag).find("form.cung_duong_info-form input[name='date']").val('');
+               $(tag).find("form.cung_duong_info-form input[name='date']").val(moment().format('DD/MM/YYYY'));
                $(tag).find("form.cung_duong_info-form input[name='tinh_tai_vat']").val('');
                $(tag).find("form.cung_duong_info-form input[name='qui_doi']").val('');
                $(tag).find("form.cung_duong_info-form input[name='ghi_chu']").val('');
