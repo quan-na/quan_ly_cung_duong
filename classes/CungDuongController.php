@@ -106,9 +106,11 @@ class CungDuongController {
             } else {
                 // check muc cung duong
                 if (!ctype_digit($parsedBody['muc_cung_duong_id'])) {
-                    $mcdInsertStmt = $this->ci->db->insert(array('name'))
+                    $mcdInsertStmt = $this->ci->db->insert(array('name',
+                                                                 'ar_owner', 'ar_group_level', 'ar_user', 'ar_group', 'ar_other'))
                                           ->into('muc_cung_duong')
-                                          ->values(array($parsedBody['muc_cung_duong_id']));
+                                          ->values(array($parsedBody['muc_cung_duong_id'],
+                                                         $_SESSION['username'], $_SESSION['group_level'], 3, 2, 0));
                     $mcdInsertedId = $mcdInsertStmt->execute(true);
                     $parsedBody['muc_cung_duong_id'] = $mcdInsertedId;
                 }

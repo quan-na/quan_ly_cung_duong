@@ -140,7 +140,7 @@
                                buttons: {
                                    yes: {
                                        label: globalControl.lang.translate("Yes"),
-                                       className: "btn",
+                                       className: "btn-primary",
                                        callback: function() {
                                            globalControl.doAjax("/cung_duong/delete", {id:ids[0]}, function(data) {
                                                $(tag).find("div.table-responsive > table").bootgrid("reload");

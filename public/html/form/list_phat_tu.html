@@ -111,7 +111,7 @@
                                buttons: {
                                    yes: {
                                        label: globalControl.lang.translate("Yes"),
-                                       className: "btn",
+                                       className: "btn-primary",
                                        callback: function() {
                                            globalControl.doAjax("/phat_tu/delete", {id:ids[0]}, function(data) {
                                                $(tag).find("div.table-responsive > table").bootgrid("reload");
