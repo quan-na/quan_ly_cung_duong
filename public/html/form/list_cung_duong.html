@@ -120,7 +120,7 @@
                }
            },
            delete_cd_button: {
-               label: "Delete cung duong",
+               label: "Delete cung duong", color: "warning",
                callback: function(btTag) {
                    $(btTag).filter("button").click(function() {
                        var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
@@ -247,7 +247,7 @@
                }
            },
            cancel_cd_button: {
-               label: "Cancel",
+               label: "Cancel", color: "default",
                callback: function(btTag) {
                    $(btTag).filter("button").click(function() {
                        $(tag).filter("div.cung_duong_list-panel").show();

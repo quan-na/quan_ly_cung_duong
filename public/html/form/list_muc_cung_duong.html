@@ -75,7 +75,7 @@
                }
            },
            delete_mcd_button: {
-               label: "Delete muc cung duong",
+               label: "Delete muc cung duong", color: "warning",
                callback: function(btTag) {
                    $(btTag).filter("button").click(function() {
                        var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
@@ -138,7 +138,7 @@
                }
            },
            cancel_mcd_button: {
-               label: "Cancel",
+               label: "Cancel", color: "default",
                callback: function(btTag) {
                    $(btTag).filter("button").click(function() {
                        $(tag).filter("div.muc_cung_duong_list-panel").show();

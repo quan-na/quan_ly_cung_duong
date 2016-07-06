@@ -91,7 +91,7 @@
                }
            },
            delete_pt_button: {
-               label: "Delete phat tu",
+               label: "Delete phat tu", color: "warning",
                callback: function(btTag) {
                    $(btTag).filter("button").click(function() {
                        var ids = $(tag).find("div.table-responsive > table").bootgrid("getSelectedRows");
@@ -152,7 +152,7 @@
                }
            },
            cancel_choose_pt_button: {
-               label: "Cancel",
+               label: "Cancel", color: "default",
                callback: function(btTag) {
                    $("div.choose_bt-container").hide();
                    $(btTag).filter("button").click(function() {
@@ -192,7 +192,7 @@
                }
            },
            cancel_pt_button: {
-               label: "Cancel",
+               label: "Cancel", color: "default",
                callback: function(btTag) {
                    $(btTag).filter("button").click(function() {
                        $(tag).filter("div.phat_tu_list-panel").show();
