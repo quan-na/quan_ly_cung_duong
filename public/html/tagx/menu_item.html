@@ -3,7 +3,7 @@
 //<script type='text/javascript'>
    function ( tag, options ) {
        if (typeof(options.menu_text) == 'string')
-           $(tag).children("a").html(options.menu_text);
+           $(tag).children("a").text(globalControl.lang.translate(options.menu_text));
        if (options.menu_id && globalControl.hasMenuAction(options.menu_id))
            $(tag).children("a").click(function () {
                $(tag).parents(".navbar-nav").children("li").removeClass('active')
