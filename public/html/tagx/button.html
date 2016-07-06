@@ -1,8 +1,10 @@
-<button type="button" lang="en" class="btn btn-default">#</button>
+<button type="button" lang="en" class="btn btn-primary">#</button>
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
-       // TODO and colors
+       // colors : default primary success info warning danger link
+       if (typeof(options.color) == 'string')
+           $(tag).filter("button").removeClass('btn-primary').addClass('btn-'+options.color);
        if (typeof(options.label) == 'string')
            $(tag).filter("button").text(globalControl.lang.translate(options.label));
        if (typeof(options.callback) == 'function')
