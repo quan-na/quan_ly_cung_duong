@@ -37,8 +37,10 @@
                        switchOption.onText = globalControl.lang.translate(val.on);
                    if (typeof(val.off) == 'string')
                        switchOption.offText = globalControl.lang.translate(val.off);
-                   if (val.checked)
+                   if (val.checked) {
                        switchOption.state = true;
+                       checkbox.attr("checked", true);
+                   }
                }
                _switches[idx] = checkbox.bootstrapSwitch(switchOption);
            });

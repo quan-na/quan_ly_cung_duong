@@ -74,6 +74,7 @@ $app->post('/cung_duong/list', '\CungDuongController:cungDuongList');
 $app->post('/cung_duong/delete', '\CungDuongController:cungDuongDelete');
 $app->post('/cung_duong/get', '\CungDuongController:cungDuongGet');
 $app->post('/cung_duong/save', '\CungDuongController:cungDuongSave');
+$app->post('/cung_duong/report', '\CungDuongController:cungDuongReport');
 
 $app->post('/user/get_current', '\UserController:userGetCurrent');
 $app->post('/user/change_password', '\UserController:userChangePassword');

@@ -2,9 +2,43 @@
     <thead>
         <tr></tr>
     </thead>
+    <tbody>
+    </tbody>
 </table>
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
+       var _this = {};
+       var dataKeys = [];
+       _this.loadHeader = function(headerObj) {
+           // clear header and data
+           $(tag).find("thead > tr").empty();
+           $(tag).find("tbody").empty();
+           // load new header
+           dataKeys = [];
+           $.each(headerObj, function(idx, val) {
+               dataKeys.push(idx);
+               $("<th></th>").appendTo($(tag).find("thead > tr")).text(globalControl.lang.translate(val));
+           });
+       };
+       _this.loadData = function(dataArr) {
+           // clear data
+           $(tag).find("tbody").empty();
+           // load data
+           for (var i=0; i<dataArr.length; i++) {
+               var row = $("<tr></tr>").appendTo($(tag).find("tbody"));
+               for (var j=0; j<dataKeys.length; j++) {
+                   var cell = $("<td></td>").appendTo(row);
+                   if (typeof(dataArr[i][dataKeys[j]]) != "undefined")
+                       cell.text(dataArr[i][dataKeys[j]]);
+               }
+           }
+       };
+       if (typeof(options.header) == 'object')
+           _this.loadHeader(options.header);
+       if (typeof(options.data) == 'object')
+           _this.loadData(options.data);
+       if (typeof(options.callback) == 'function')
+           options.callback(_this);
    }
 //</script>

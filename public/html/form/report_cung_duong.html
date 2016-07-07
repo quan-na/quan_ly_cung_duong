@@ -22,7 +22,7 @@
     </div>
 </div>
 <div class="container-fluid report_cung_duong-container">
-    <div class="col-sm-12 table-responsive" auto-load="static_grid" attribute="report_table"/>
+    <div class="col-sm-12 table-responsive" autoload="static_grid" attribute="report_table"/>
     <div class="btn-toolbar hidden-print" role="toolbar" aria-label="...">
         <div autoload="button" attribute="print_report_button" class="btn-group pull-right" role="group" aria-label="..."></div>
     </div>
@@ -32,6 +32,7 @@
    function ( tag, options ) {
        var _this = {};
        var _mucCungDuongSelect;
+       var _reportTableControl;
        globalControl.autoLoadForm($(tag), {
            date_range_from: { label: "From date", name: "fromDate" },
            date_range_to: { label: "To date", name: "toDate" },
@@ -68,22 +69,96 @@
            generate_report_button: {
                label: "Generate report",
                callback: function(btTag) {
-                   // TODO clicked
+                   $(btTag).filter("button").click(function() {
+                       var form = $(tag).find("form.cung_duong_report-form").serializeObject();
+                       // normalize form
+                       if (typeof(form.muc_cung_duong_id) == 'string' && form.muc_cung_duong_id != '')
+                           form.muc_cung_duong_id = [ form.muc_cung_duong_id ];
+                       if (typeof(form.groupBy) == 'string')
+                           form.groupBy = [ form.groupBy ];
+                       if (form['fromDate'].length > 0 &&
+                           form['toDate'].length > 0 &&
+                           moment(form.fromDate, 'DD/MM/YYYY').isAfter(moment(form.toDate, 'DD/MM/YYYY'))) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("From date must be before To date."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                           return;
+                       }
+                       if (form['minQuiDoi'] != '' && !/^\d+$/.test(form['minQuiDoi'])) {
+                           bootbox.dialog({
+                               message: globalControl.lang.translate("Please input Minimum qui doi as number."),
+                               buttons: {
+                                   ok: {
+                                       label: globalControl.lang.translate("OK"),
+                                       className: "btn"
+                                   }
+                               }
+                           });
+                           return;
+                       }
+                       var header = {};
+                       switch (form.groupBy_date) {
+                           case 'day':
+                               header.day = 'Day';
+                               break;
+                           case 'month':
+                               header.month = 'Month';
+                               break;
+                           case 'year':
+                               header.year = 'Year';
+                               break;
+                       }
+                       if (typeof(form.groupBy) == 'object' && 0 <= $.inArray('phatTu', form.groupBy)) {
+                           header.name = "Name";
+                           header.phapDanh = "Phap danh";
+                           header.email = "Email";
+                       }
+                       if (typeof(form.groupBy) == 'object' && 0 <= $.inArray('mucCungDuong', form.groupBy)) {
+                           header.mucCungDuong = "Muc cung duong";
+                       }
+                       header.sumCungDuong = "Sum cung duong";
+                       _reportTableControl.loadHeader(header);
+                       globalControl.doAjax('/cung_duong/report', form, function(data) {
+                           if (data.result == 'ok')
+                               _reportTableControl.loadData(data.rows);
+                       });
+                       $(tag).filter("div.report_cung_duong-container").show();
+                   });
                }
            },
            clear_report_button: {
                label: "Clear", color: "default",
                callback: function(btTag) {
-                   // TODO clicked
+                   $(btTag).filter("button").click(function() {
+                       $(tag).filter("div.report_cung_duong-container").hide();
+                       // clear forms
+                       $(tag).find("input[name='fromDate'], input[name='toDate'], input[name='minQuiDoi']").val('');
+                       $(tag).find("select[name='muc_cung_duong_id']").select2().val('').select2();
+                       $(tag).find("input[name='groupBy']").bootstrapSwitch('state', false, true);
+                   });
+               }
+           },
+           report_table: {
+               callback: function(control) {
+                   _reportTableControl = control;
                }
            },
            print_report_button: {
                label: "Print",
                callback: function(btTag) {
-                   // TODO clicked
+                   $(btTag).filter("button").click(function() {
+                       window.print();
+                   });
                }
            }
        });
+       $(tag).filter("div.report_cung_duong-container").hide();
        var _loadMucCungDuongSelect = function(callback) {
            globalControl.doAjax("/muc_cung_duong/list", {}, function(data) {
                var selOptions = {};
@@ -101,7 +176,5 @@
        }
        if (typeof(options.callback) == 'function')
            options.callback(_this);
-       // window.print();
-       // $('td:nth-child(2),th:nth-child(2)').hide();
    }
 //</script>

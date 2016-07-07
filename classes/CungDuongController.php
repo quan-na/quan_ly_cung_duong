@@ -131,5 +131,15 @@ class CungDuongController {
         }
         return $response->withJson($returnObj);
     }
+
+    public function cungDuongList($request, $response, $args) {
+        $returnObj = array();
+        $parsedBody = $request->getParsedBody();
+        $this->ci->logger->addInfo('--- Cung duong report request received : ' . json_encode($parsedBody));
+        $row = array();
+        $returnObj['result'] = 'ok';
+        $returnObj['rows'] = $rows;
+        return $response->withJson($returnObj);
+    }
 }
 ?>

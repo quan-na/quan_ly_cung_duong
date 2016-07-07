@@ -72,7 +72,23 @@
       "Save password":"Lưu mật khẩu",
       "All three passwords are required.":"Xin nhập đủ ba mật khẩu.",
       "Retype Password is not matched.":"Mật khẩu nhập lại không khớp.",
-      "Old password is not matched.":"Mật khẩu cũ không khớp."
+      "Old password is not matched.":"Mật khẩu cũ không khớp.",
+    "__7":"Report form",
+      "Report conditions":"Điều kiện báo cáo",
+      "From date":"Từ ngày",
+      "To date":"Tới ngày",
+      "Minimum qui doi":"Tiền qui đổi trên mức",
+      "Day":"Ngày",
+      "Month":"Tháng",
+      "Year":"Năm",
+      "Nguoi":"Người",
+      "Muc":"Mục",
+      "Clear":"Xoá",
+      "Generate report":"Tạo báo cáo",
+      "Print":"In ra máy",
+      "Sum cung duong":"Tổng cúng dường",
+      "From date must be before To date.":"Xin nhập Từ ngày trước Tới ngày",
+      "Please input Minimum qui doi as number.":"Xin nhập Tiền qui đổi trên mức là một số."
 	},
 	"regex": []
 }
