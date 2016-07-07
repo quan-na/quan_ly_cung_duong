@@ -121,7 +121,8 @@ var globalControl = (function () {
         // load menu from database, trigger login modal
         _this.doAjax("/menu/list", {}, function(data) {
             $.each(data, function (idx, obj) {
-                _this.loadControl("/html/tagx/menu_item.html", $("#navbar > .navbar-nav"), obj);
+                var liTag = $("<li></li>").appendTo($("#navbar > .navbar-nav"));
+                _this.loadControl("/html/tagx/menu_item.html", liTag, obj);
             });
         });
         // Load login form

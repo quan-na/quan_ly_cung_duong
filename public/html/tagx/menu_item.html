@@ -1,27 +1,27 @@
-<li><a lang="en" href="#">#</a></li>
+<a lang="en" href="#">#</a>
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
        if (typeof(options.menu_text) == 'string')
-           $(tag).children("a").text(globalControl.lang.translate(options.menu_text));
+           $(tag).filter("a").text(globalControl.lang.translate(options.menu_text));
        if (options.menu_id && globalControl.hasMenuAction(options.menu_id))
-           $(tag).children("a").click(function () {
+           $(tag).filter("a").click(function () {
                $(tag).parents(".navbar-nav").children("li").removeClass('active')
                $(tag).children().parents(".navbar-nav > li").addClass('active');
                globalControl.menuAction(options.menu_id)();
            });
        // load childmenus
        if (typeof(options.subMenus) == 'object') {
-           $(tag).children("a").addClass('dropdown-toggle')
+           $(tag).filter("a").addClass('dropdown-toggle')
                  .attr('data-toggle', 'dropdown')
                  .attr('role', 'button')
                  .attr('aria-haspopup', 'true')
                  .attr('aria-expanded', 'false');
-           var ulTag = $("<ul class='dropdown-menu'></ul>").insertAfter($(tag).children("a"));
+           var ulTag = $("<ul class='dropdown-menu'></ul>").insertAfter($(tag).filter("a"));
            $.each(options.subMenus, function (idx, obj) {
-               _this.loadControl("/html/tagx/menu_item.html", $(ulTag), obj);
+               var liTag = $("<li></li>").appendTo($(ulTag));
+               _this.loadControl("/html/tagx/menu_item.html", liTag, obj);
            });
        }
-       // TODO load attributes
    }
 //</script>
