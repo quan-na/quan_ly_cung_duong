@@ -40,6 +40,7 @@
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
+       var _this = {};
        globalControl.autoLoadForm($(tag), {
            change_password_button: {
                label: "Change password",
@@ -112,9 +113,14 @@
        });
        $(tag).filter("div.user_view-panel").show();
        $(tag).filter("div.user_edit-panel").hide();
-       globalControl.doAjax('/user/get_current', {}, function(data) {
-           $(tag).find("div.text-view[attribute='username']").text(data.username);
-           $(tag).find("div.text-view[attribute='displayName']").text(data.display_name);
-       });
+       _this.reload = function() {
+           globalControl.doAjax('/user/get_current', {}, function(data) {
+               $(tag).find("div.text-view[attribute='username']").text(data.username);
+               $(tag).find("div.text-view[attribute='displayName']").text(data.display_name);
+           });
+       }
+       _this.reload();
+       if (typeof(options.callback) == 'function')
+           options.callback(_this);
    }
 //</script>

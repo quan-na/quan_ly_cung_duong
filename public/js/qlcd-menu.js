@@ -1,6 +1,8 @@
 (function() {
     var _listPhatTuControl;
     var _listCungDuongControl;
+    var _reportCungDuongControl;
+    var _userInfoControl;
     globalControl.assignMenuActions({
         'list_cung_duong': function() {
             if ($("div.list_cung_duong-view").length == 0) {
@@ -58,16 +60,26 @@
         'report_cung_duong': function() {
             if ($("div.report_cung_duong-view").length == 0) {
                 var theDiv = $("<div class='container report_cung_duong-view'/>").insertAfter($("div.home-view"));
-                globalControl.loadControl("/html/form/report_cung_duong.html", theDiv, {});
-            }
+                globalControl.loadControl("/html/form/report_cung_duong.html", theDiv, {
+                    callback: function(control) {
+                        _reportCungDuongControl = control;
+                    }
+                });
+            } else
+                _reportCungDuongControl.reloadMucCungDuong();
             $("body").children("div.container").addClass("hidden");
             $("body").children("div.report_cung_duong-view").removeClass("hidden");
         },
         'user_info': function() {
             if ($("div.user_info-view").length == 0) {
                 var theDiv = $("<div class='container user_info-view'/>").insertAfter($("div.home-view"));
-                globalControl.loadControl("/html/form/user_info.html", theDiv, {});
-            }
+                globalControl.loadControl("/html/form/user_info.html", theDiv, {
+                    callback: function(control) {
+                        _userInfoControl = control;
+                    }
+                });
+            } else
+                _userInfoControl.reload();
             $("body").children("div.container").addClass("hidden");
             $("body").children("div.user_info-view").removeClass("hidden");
         },
