@@ -296,7 +296,9 @@ var Lang = (function () {
 		// If element has only one text node and data-lang-token is defined
 		// set langContentKey property to use as a token
 		if(nodes.length == 1){
-			nodeObjArray[0].langToken = elem.data('langToken');
+      try { 
+			  nodeObjArray[0].langToken = elem.data('langToken');
+      } catch (err) {/* quan.na : wrap stupid exception */}
 		}
 		
 		return nodeObjArray;

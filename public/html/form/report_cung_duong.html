@@ -1,11 +1,106 @@
 <h1 lang="en">Report cung duong</h1>
-<!-- .visible-print-block
-     .visible-print-inline
-     .visible-print-inline-block -->
-<!-- .hidden-print -->
+<div class="panel panel-default hidden-print">
+    <div class="panel-heading" lang="en">Report conditions</div>
+    <div class="panel-body">
+        <form role="form" class="cung_duong_report-form" onsubmit="return false;">
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="date_picker" attribute="date_range_from"/>
+                <div class="form-group col-sm-6" autoload="date_picker" attribute="date_range_to"/>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6" autoload="single_select" attribute="muc_cung_duong"/>
+                <div class="form-group col-sm-6" autoload="text_input" attribute="min_qui_doi"/>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-12" autoload="switch" attribute="group_by"/>
+            </div>
+            <div class="btn-toolbar" role="toolbar" aria-label="...">
+                <div autoload="button" attribute="generate_report_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+                <div autoload="button" attribute="clear_report_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container-fluid report_cung_duong-container">
+    <div class="col-sm-12 table-responsive" auto-load="static_grid" attribute="report_table"/>
+    <div class="btn-toolbar hidden-print" role="toolbar" aria-label="...">
+        <div autoload="button" attribute="print_report_button" class="btn-group pull-right" role="group" aria-label="..."></div>
+    </div>
+</div>
 ===to-lead-people_walk-behind-them===
 //<script type='text/javascript'>
    function ( tag, options ) {
+       var _this = {};
+       var _mucCungDuongSelect;
+       globalControl.autoLoadForm($(tag), {
+           date_range_from: { label: "From date", name: "fromDate" },
+           date_range_to: { label: "To date", name: "toDate" },
+           muc_cung_duong: {
+               label: "Muc cung duong",
+               name: "muc_cung_duong_id",
+               multiple: true,
+               callback: function(selectControl) {
+                   _mucCungDuongSelect = selectControl;
+               }
+           },
+           min_qui_doi: { label: "Minimum qui doi", name: "minQuiDoi" },
+           group_by: {
+               label: "Group by",
+               name: "groupBy",
+               options: {
+                   day: {
+                       label: "Day",
+                       group: "date",
+                       checked: true
+                   },
+                   month: {
+                       label: "Month",
+                       group: "date"
+                   },
+                   year: {
+                       label: "Year",
+                       group: "date"
+                   },
+                   phatTu: "Nguoi",
+                   mucCungDuong: "Muc"
+               }
+           },
+           generate_report_button: {
+               label: "Generate report",
+               callback: function(btTag) {
+                   // TODO clicked
+               }
+           },
+           clear_report_button: {
+               label: "Clear", color: "default",
+               callback: function(btTag) {
+                   // TODO clicked
+               }
+           },
+           print_report_button: {
+               label: "Print",
+               callback: function(btTag) {
+                   // TODO clicked
+               }
+           }
+       });
+       var _loadMucCungDuongSelect = function(callback) {
+           globalControl.doAjax("/muc_cung_duong/list", {}, function(data) {
+               var selOptions = {};
+               $.each(data.rows, function(idx, val) {
+                   selOptions[val.id] = val.name;
+               });
+               _mucCungDuongSelect.loadOptions(selOptions);
+               if (typeof(callback) == 'function')
+                   callback();
+           });
+       };
+       _loadMucCungDuongSelect();
+       _this.reloadMucCungDuong = function() {
+           _loadMucCungDuongSelect();
+       }
+       if (typeof(options.callback) == 'function')
+           options.callback(_this);
        // window.print();
        // $('td:nth-child(2),th:nth-child(2)').hide();
    }

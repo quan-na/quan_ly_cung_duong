@@ -11,7 +11,7 @@ var globalControl = (function () {
         currentLang: 'vi'
     });
 
-    // menu items actions TODO Move this to separated file
+    // menu items actions -> moved to separated file
     var menuActions = {};
     _this.hasMenuAction = function(menuId) {
         if (typeof(menuActions[menuId]) == 'function')

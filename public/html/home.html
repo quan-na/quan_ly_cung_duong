@@ -5,21 +5,39 @@
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="/css/bootstrap-flatly.min.css"/>
+        <link rel="stylesheet" href="/css/bootstrap-flatly.min.css" media="screen"/>
+        <link rel="stylesheet" href="/css/bootstrap-theme.min.css" media="print"/>
         <link rel="stylesheet" href="/css/jquery.bootgrid.min.css"/>
         <link rel="stylesheet" href="/css/select2.min.css"/>
         <link rel="stylesheet" href="/css/select2-bootstrap.css"/>
         <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css"/>
+        <link rel="stylesheet" href="/css/bootstrap-switch.min.css"/>
         <style>
-         body {
-             padding-top: 50px;
-         }
-         .starter-template {
-             padding: 40px 15px;
-             text-align: center;
-         }
-         div.bootgrid-header div.actionBar > div.actions > button[title='Refresh'] {
-             padding: 13px 13px;
+         @media screen {
+             body {
+                 padding-top: 50px;
+             }
+             .starter-template {
+                 padding: 40px 15px;
+                 text-align: center;
+             }
+             div.bootgrid-header div.actionBar > div.actions > button[title='Refresh'] {
+                 padding: 13px 13px;
+             }
+             span.select2-container span.select2-selection--multiple {
+                 padding: 6px 11px 10px 15px;
+             }
+             span.select2-container span.select2-selection--single {
+                 padding: 6px 0px 10px 15px;
+                 height: 45px;
+             }
+             span.select2-container span.select2-selection--single span.select2-selection__arrow {
+                 height: 45px;
+                 width: 30px;
+             }
+             div.checkbox-wrap > .bootstrap-switch {
+                 margin-left: 4px;
+             }
          }
         </style>
     </head>
@@ -63,6 +81,7 @@
         <script src="/js/select2.min.js"></script>
         <script src="/js/bootstrap-datetimepicker.min.js"></script>
         <script src="/js/bootbox.min.js"></script>
+        <script src="/js/bootstrap-switch.min.js"></script>
         <script src="/js/qlcd-common.js"></script>
         <script src="/js/qlcd-menu.js"></script>
     </body>

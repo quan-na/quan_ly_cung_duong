@@ -1,0 +1,52 @@
+<label lang="en">#</label>
+<div class="row" style="height:32px;">
+    <div class="col-sm-12 checkbox-wrap"/>
+</div>
+===to-lead-people_walk-behind-them===
+//<script type='text/javascript'>
+   function ( tag, options ) {
+       var _this = {};
+       var _switches = {};
+       var _name = "__switch";
+       if (typeof(options.name) == 'string')
+           _name = options.name;
+       if (typeof(options.label) == 'string')
+           $(tag).filter("label").text(globalControl.lang.translate(options.label));
+       if (typeof(options.options) == 'object')
+           $.each(options.options, function(idx, val) {
+               var checkbox;
+               var switchOption = {
+                   onText: globalControl.lang.translate("Yes"),
+                   offText: globalControl.lang.translate("No")
+               };
+               if (typeof(val) == 'string') {
+                   checkbox = $($("<input type=\"checkbox\" />")).appendTo($(tag).find("div.checkbox-wrap"))
+                                                                 .attr("name", _name).val(idx);
+                   switchOption.labelText = globalControl.lang.translate(val);
+               } else if (typeof(val) == 'object') {
+                   if (typeof(val.group) == 'string') {
+                       checkbox = $($("<input type=\"radio\" />")).appendTo($(tag).find("div.checkbox-wrap"))
+                                                                  .attr("name", _name + '_' + val.group).val(idx);
+                   } else {
+                       checkbox = $($("<input type=\"checkbox\" />")).appendTo($(tag).find("div.checkbox-wrap"))
+                                                                     .attr("name", _name).val(idx);
+                   }
+                   if (typeof(val.label) == 'string')
+                       switchOption.labelText = globalControl.lang.translate(val.label);
+                   if (typeof(val.on) == 'string')
+                       switchOption.onText = globalControl.lang.translate(val.on);
+                   if (typeof(val.off) == 'string')
+                       switchOption.offText = globalControl.lang.translate(val.off);
+                   if (val.checked)
+                       switchOption.state = true;
+               }
+               _switches[idx] = checkbox.bootstrapSwitch(switchOption);
+           });
+       // get the switches
+       _this.switches = function() {
+           return _switches;
+       }
+       if (typeof(options.callback)=='function')
+           options.callback(_this);
+   }
+//</script>
