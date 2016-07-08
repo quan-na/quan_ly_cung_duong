@@ -19,7 +19,7 @@ class PhatTuController {
         if (!empty($parsedBody['sort']))
             foreach ($parsedBody['sort'] as $key => $direction)
                 $statement->orderBy($key, $direction);
-        $countStatement = $this->ci->db->select(array('id'))->count()->from('phat_tu');
+        $countStatement = $this->ci->db->select(array('COUNT(id)'))->from('phat_tu');
         // filter by keyword
         if (!empty($parsedBody['searchPhrase'])) {
             $statement->where("CONCAT('#',id,'#',CONCAT_WS(',',name,phap_danh,phone,email))", 'LIKE', '%' . str_replace(' ', '%', $parsedBody['searchPhrase']) . '%');
@@ -51,7 +51,7 @@ class PhatTuController {
         $total = $countPdoStatement->fetch(PDO::FETCH_NUM);
         $returnObj['current'] = $parsedBody['current'];
         $returnObj['rowCount'] = $parsedBody['rowCount'];
-        $returnObj['total'] = $total[1];
+        $returnObj['total'] = $total[0];
         $returnObj['rows'] = $phatTuArray;
         return $response->withJson($returnObj);
     }

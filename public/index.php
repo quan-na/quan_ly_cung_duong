@@ -14,7 +14,7 @@ $container = $app->getContainer();
 
 $container['logger'] = function($c) {
     $logger = new \Monolog\Logger('app_logger');
-    $file_handler = new \Monolog\Handler\StreamHandler("/var/log/qlcd/app.log");
+    $file_handler = new \Monolog\Handler\StreamHandler($c['settings']['log']['location']);
     $logger->pushHandler($file_handler);
     return $logger;
 };

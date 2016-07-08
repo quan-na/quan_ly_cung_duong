@@ -26,7 +26,7 @@ class CungDuongController {
         if (!empty($parsedBody['sort']))
             foreach ($parsedBody['sort'] as $key => $direction)
         $statement->orderBy($key, $direction);
-        $countStatement = $this->ci->db->select(array('cung_duong.id'))->count()->from('cung_duong')
+        $countStatement = $this->ci->db->select(array('COUNT(cung_duong.id)'))->from('cung_duong')
                                ->join('phat_tu', 'cung_duong.phat_tu_id', '=', 'phat_tu.id')
                                ->join('muc_cung_duong', 'cung_duong.muc_cung_duong_id', '=', 'muc_cung_duong.id');
         // filter by keyword
@@ -42,7 +42,7 @@ class CungDuongController {
         $total = $countPdoStatement->fetch(PDO::FETCH_NUM);
         $returnObj['current'] = $parsedBody['current'];
         $returnObj['rowCount'] = $parsedBody['rowCount'];
-        $returnObj['total'] = $total[1];
+        $returnObj['total'] = $total[0];
         $returnObj['rows'] = $phatTuArray;
         return $response->withJson($returnObj);
     }

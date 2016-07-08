@@ -19,7 +19,7 @@ class MucCungDuongController {
         if (!empty($parsedBody['sort']))
             foreach ($parsedBody['sort'] as $key => $direction)
         $statement->orderBy($key, $direction);
-        $countStatement = $this->ci->db->select(array('id'))->count()->from('muc_cung_duong');
+        $countStatement = $this->ci->db->select(array('COUNT(id)'))->from('muc_cung_duong');
         // filter by keyword
         if (!empty($parsedBody['searchPhrase'])) {
             $statement->where("CONCAT('#',id,'#',name)", 'LIKE', '%' . str_replace(' ', '%', $parsedBody['searchPhrase']) . '%');
@@ -31,7 +31,7 @@ class MucCungDuongController {
         $total = $countPdoStatement->fetch(PDO::FETCH_NUM);
         $returnObj['current'] = $parsedBody['current'];
         $returnObj['rowCount'] = $parsedBody['rowCount'];
-        $returnObj['total'] = $total[1];
+        $returnObj['total'] = $total[0];
         $returnObj['rows'] = $phatTuArray;
         return $response->withJson($returnObj);
     }

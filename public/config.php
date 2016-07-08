@@ -9,6 +9,10 @@ return [
             'password'  => 'root',
             'dbname'    => 'quan_ly_cd',
         ],
+
+        'log' => [
+            'location'  => '/var/log/qlcd/app.log',
+        ],
     ]
 ];
 ?>
