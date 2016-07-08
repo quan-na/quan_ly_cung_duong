@@ -25,6 +25,7 @@
  Source: https://github.com/irrelon/jquery-lang-js
 
  Changelog: See readme.md
+ By quan.na naquan2112@gmail.com : wrap exception in case adding checkboxes, did not know the cause yet.
  */
 var Lang = (function () {
 	"use strict";
@@ -298,7 +299,7 @@ var Lang = (function () {
 		if(nodes.length == 1){
       try { 
 			  nodeObjArray[0].langToken = elem.data('langToken');
-      } catch (err) {/* quan.na : wrap stupid exception */}
+      } catch (err) {/* quan.na : wrap exception to prevent errors*/}
 		}
 		
 		return nodeObjArray;

@@ -136,7 +136,77 @@ class CungDuongController {
         $returnObj = array();
         $parsedBody = $request->getParsedBody();
         $this->ci->logger->addInfo('--- Cung duong report request received : ' . json_encode($parsedBody));
-        $row = array();
+        // get selecting fields
+        $selectingFields = array("SUM(cd.qui_doi) AS sumCungDuong");
+        $joinPhatTu = false;
+        $joinMucCungDuong = false;
+        switch ($parsedBody['groupBy_date']) {
+            case 'day':
+                array_push($selectingFields, "DATE_FORMAT(cd.date,'%d/%m/%Y') AS day");
+                break;
+            case 'month':
+                array_push($selectingFields, "DATE_FORMAT(cd.date,'%m/%Y') AS month");
+                break;
+            case 'year':
+                array_push($selectingFields, "DATE_FORMAT(cd.date,'%Y') AS year");
+                break;
+        }
+        if ($parsedBody['groupBy'] and in_array('phatTu', $parsedBody['groupBy'])) {
+            array_push($selectingFields, "pt.name AS name", "pt.phap_danh AS phapDanh", "pt.email AS email");
+            $joinPhatTu = true;
+        }
+        if ($parsedBody['groupBy'] and in_array('mucCungDuong', $parsedBody['groupBy'])) {
+            array_push($selectingFields, "mcd.name AS mucCungDuong");
+            $joinMucCungDuong = true;
+        }
+        $statement = $this->ci->db->select($selectingFields)->from("cung_duong cd");
+        if ($joinPhatTu)
+            $statement->join("phat_tu pt", "pt.id", "=", "cd.phat_tu_id");
+        if ($joinMucCungDuong)
+            $statement->join("muc_cung_duong mcd", "mcd.id", "=", "cd.muc_cung_duong_id");
+        // generate where
+        if ($parsedBody['fromDate']) {
+            $parsedBody['fromDate'] = \DateTime::createFromFormat('d/m/Y', $parsedBody['fromDate'])->format('Y-m-d');
+            $statement->where('cd.date', '>=', $parsedBody['fromDate']);
+        }
+        if ($parsedBody['toDate']) {
+            $parsedBody['toDate'] = \DateTime::createFromFormat('d/m/Y', $parsedBody['toDate'])->format('Y-m-d');
+            $statement->where('cd.date', '<=', $parsedBody['toDate']);
+        }
+        if ($parsedBody['muc_cung_duong_id']) {
+            $statement->whereIn('cd.muc_cung_duong_id', $parsedBody['muc_cung_duong_id']);
+        }
+        if ($parsedBody['minQuiDoi']) {
+            $statement->where('cd.qui_doi', '>=', $parsedBody['minQuiDoi']);
+        }
+        // generate group by
+        $groupByStr = "";
+        switch ($parsedBody['groupBy_date']) {
+            case 'day':
+                $groupByStr = $groupByStr . "DATE_FORMAT(cd.date,'%d/%m/%Y'),";
+                $statement->orderBy("DATE_FORMAT(cd.date,'%Y-%m-%d')", "ASC");
+                break;
+            case 'month':
+                $groupByStr = $groupByStr . "DATE_FORMAT(cd.date,'%m/%Y'),";
+                $statement->orderBy("DATE_FORMAT(cd.date,'%Y-%m')", "ASC");
+                break;
+            case 'year':
+                $groupByStr = $groupByStr . "DATE_FORMAT(cd.date,'%Y'),";
+                $statement->orderBy("DATE_FORMAT(cd.date,'%Y')", "ASC");
+                break;
+        }
+        $statement->orderBy("SUM(cd.qui_doi)", "DESC");
+        if ($parsedBody['groupBy'] and in_array('phatTu', $parsedBody['groupBy'])) {
+            $groupByStr = $groupByStr . "cd.phat_tu_id,";
+        }
+        if ($parsedBody['groupBy'] and in_array('mucCungDuong', $parsedBody['groupBy'])) {
+            $groupByStr = $groupByStr . "cd.muc_cung_duong_id,";
+        }
+        $groupByStr = rtrim($groupByStr, ',');
+        if ($groupByStr)
+            $statement->groupBy($groupByStr);
+        $pdoStatement = $statement->execute();
+        $rows = $pdoStatement->fetchAll(PDO::FETCH_OBJ);
         $returnObj['result'] = 'ok';
         $returnObj['rows'] = $rows;
         return $response->withJson($returnObj);
