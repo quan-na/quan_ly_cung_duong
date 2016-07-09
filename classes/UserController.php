@@ -1,41 +1,39 @@
-<?php
-use Interop\Container\ContainerInterface;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response; 
+<?php 
 
 class UserController {
-    protected $ci;
+    protected $app;
 
-    public function __construct(ContainerInterface $ci) {
-        $this->ci = $ci;
+    public function __construct(\Slim\Slim $app) {
+        $this->app = $app;
     }
 
-    public function userGetCurrent($request, $response, $args) {
-        $statement = $this->ci->db->select(array('username', 'display_name'))->from('user_account')
+    public function userGetCurrent() {
+        $statement = $this->app->db->select(array('username', 'display_name'))->from('user_account')
                           ->where('username', '=', $_SESSION['username']);
         $pdoStatement = $statement->execute();
         $currUser = $pdoStatement->fetch(PDO::FETCH_OBJ);
-        return $response->withJson($currUser);
+        $this->app->response()->status(200);
+        $this->app->response()->body(json_encode($currUser));
     }
 
-    public function userChangePassword($request, $response, $args) {
+    public function userChangePassword() {
         $returnObj = array();
-        $parsedBody = $request->getParsedBody();
-        $this->ci->logger->addInfo('--- Password change request received : ' . json_encode($parsedBody));
+        $parsedBody = json_decode($this->app->request()->getBody());
+        $this->app->logger->addInfo('--- Password change request received : ' . json_encode($parsedBody));
         // validate
-        if (!$parsedBody['oldPassword'] || !$parsedBody['newPassword'] || !$parsedBody['retypePassword']) {
+        if (empty($parsedBody->oldPassword) || empty($parsedBody->newPassword) || empty($parsedBody->retypePassword)) {
             $returnObj['result'] = 'error';
             $returnObj['message'] = 'All three passwords are required.';
         } else {
-            $oldPassStatement = $this->ci->db->select(array('password_sha1'))->from('user_account')
+            $oldPassStatement = $this->app->db->select(array('password_sha1'))->from('user_account')
                                      ->where('username', '=', $_SESSION['username']);
             $pdoOldPassStmt = $oldPassStatement->execute();
             $oldPassObj = $pdoOldPassStmt->fetch(PDO::FETCH_OBJ);
-            if ($oldPassObj->password_sha1 != sha1($parsedBody['oldPassword'])) {
+            if ($oldPassObj->password_sha1 != sha1($parsedBody->oldPassword)) {
                 $returnObj['result'] = 'error';
                 $returnObj['message'] = 'Old password is not matched.';
             } else {
-                $updateStatement = $this->ci->db->update(array('password_sha1' => sha1($parsedBody['newPassword'])))
+                $updateStatement = $this->app->db->update(array('password_sha1' => sha1($parsedBody->newPassword)))
                                         ->table('user_account')
                                         ->where('username', '=', $_SESSION['username']);
                 $rows = $updateStatement->execute();
@@ -43,7 +41,8 @@ class UserController {
                 $returnObj['rows'] = $rows;
             }
         }
-        return $response->withJson($returnObj);
+        $this->app->response()->status(200);
+        $this->app->response()->body(json_encode($returnObj));
     }
 }
 

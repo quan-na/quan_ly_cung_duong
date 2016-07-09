@@ -1,7 +1,6 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-use \UamController;
 
 require '../vendor/autoload.php';
 spl_autoload_register(function ($classname) {
@@ -74,7 +73,7 @@ $app->post('/menu/list', function () use ($app){
     $app->MenuController->menuList();
 });
 
-$app->container->singleton('PhatTuController', function ($container) use ($app) {
+$app->container->singleton('PhatTuController', function () use ($app) {
     return new \PhatTuController($app);
 });
 $app->post('/phat_tu/list', function () use ($app){
@@ -90,19 +89,50 @@ $app->post('/phat_tu/save', function () use ($app){
     $app->PhatTuController->phatTuSave();
 });
 
-$app->post('/muc_cung_duong/list', '\MucCungDuongController:mucCungDuongList');
-$app->post('/muc_cung_duong/delete', '\MucCungDuongController:mucCungDuongDelete');
-$app->post('/muc_cung_duong/get', '\MucCungDuongController:mucCungDuongGet');
-$app->post('/muc_cung_duong/save', '\MucCungDuongController:mucCungDuongSave');
+$app->container->singleton('MucCungDuongController', function () use ($app) {
+    return new \MucCungDuongController($app);
+});
+$app->post('/muc_cung_duong/list', function () use ($app){
+    $app->MucCungDuongController->mucCungDuongList();
+});
+$app->post('/muc_cung_duong/delete', function () use ($app){
+    $app->MucCungDuongController->mucCungDuongDelete();
+});
+$app->post('/muc_cung_duong/get', function () use ($app){
+    $app->MucCungDuongController->mucCungDuongGet();
+});
+$app->post('/muc_cung_duong/save', function () use ($app){
+    $app->MucCungDuongController->mucCungDuongSave();
+});
 
-$app->post('/cung_duong/list', '\CungDuongController:cungDuongList');
-$app->post('/cung_duong/delete', '\CungDuongController:cungDuongDelete');
-$app->post('/cung_duong/get', '\CungDuongController:cungDuongGet');
-$app->post('/cung_duong/save', '\CungDuongController:cungDuongSave');
-$app->post('/cung_duong/report', '\CungDuongController:cungDuongReport');
+$app->container->singleton('CungDuongController', function () use ($app) {
+    return new \CungDuongController($app);
+});
+$app->post('/cung_duong/list', function () use ($app){
+    $app->CungDuongController->cungDuongList();
+});
+$app->post('/cung_duong/delete', function () use ($app){
+    $app->CungDuongController->cungDuongDelete();
+});
+$app->post('/cung_duong/get', function () use ($app){
+    $app->CungDuongController->cungDuongGet();
+});
+$app->post('/cung_duong/save', function () use ($app){
+    $app->CungDuongController->cungDuongSave();
+});
+$app->post('/cung_duong/report', function () use ($app){
+    $app->CungDuongController->cungDuongReport();
+});
 
-$app->post('/user/get_current', '\UserController:userGetCurrent');
-$app->post('/user/change_password', '\UserController:userChangePassword');
+$app->container->singleton('UserController', function () use ($app) {
+    return new \UserController($app);
+});
+$app->post('/user/get_current', function () use ($app){
+    $app->UserController->userGetCurrent();
+});
+$app->post('/user/change_password', function () use ($app){
+    $app->UserController->userChangePassword();
+});
 
 $app->run();
 ?>

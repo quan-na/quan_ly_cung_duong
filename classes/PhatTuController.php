@@ -9,7 +9,7 @@ class PhatTuController {
 
     public function phatTuList() {
         $returnObj = array();
-        $parsedBody = json_decode($this->app->request()->getBody());
+        $parsedBody = $this->app->request()->post();
         $statement = $this->app->db->select()->from('phat_tu')
                           ->limit($parsedBody['rowCount'],
                                   $parsedBody['rowCount'] * ($parsedBody['current'] - 1));
