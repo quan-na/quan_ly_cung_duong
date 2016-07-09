@@ -13,8 +13,8 @@ class PhatTuController {
         $statement = $this->app->db->select()->from('phat_tu')
                           ->limit($parsedBody['rowCount'],
                                   $parsedBody['rowCount'] * ($parsedBody['current'] - 1));
-        if (!empty($parsedBody->sort))
-            foreach ($parsedBody->sort as $key => $direction)
+        if (!empty($parsedBody['sort']))
+            foreach ($parsedBody['sort'] as $key => $direction)
                 $statement->orderBy($key, $direction);
         $countStatement = $this->app->db->select(array('COUNT(id)'))->from('phat_tu');
         // filter by keyword
