@@ -24,7 +24,7 @@ create table user_account (
     ar_user smallint not null default 3,
     ar_group smallint not null default 1,
     ar_other smallint not null default 0
-) CHARSET utf8 COLLATE utf8_vietnamese_ci;
+) CHARSET utf8 COLLATE utf8_general_ci;
 
 INSERT INTO `user_account`
    (`username`,
@@ -71,7 +71,7 @@ create table menu_item (
     ar_user smallint not null default 3,
     ar_group smallint not null default 1,
     ar_other smallint not null default 0
-) CHARSET utf8 COLLATE utf8_vietnamese_ci;
+) CHARSET utf8 COLLATE utf8_general_ci;
 
 INSERT INTO `menu_item` (`menu_id`,`priority`,`menu_text`,`parent_menu`,`ar_owner`,`ar_group_level`,`ar_user`,`ar_group`,`ar_other`)
   VALUES ('cung_duong',1,'Cung duong',NULL,'admin',10,3,1,0);
@@ -105,7 +105,7 @@ create table phat_tu (
     ar_user smallint not null default 3,
     ar_group smallint not null default 1,
     ar_other smallint not null default 0
-) CHARSET utf8 COLLATE utf8_vietnamese_ci;
+) CHARSET utf8 COLLATE utf8_general_ci;
 
 create table muc_cung_duong (
 	id bigint not null primary key auto_increment,
@@ -117,7 +117,7 @@ create table muc_cung_duong (
     ar_user smallint not null default 3,
     ar_group smallint not null default 1,
     ar_other smallint not null default 0
-) CHARSET utf8 COLLATE utf8_vietnamese_ci;
+) CHARSET utf8 COLLATE utf8_general_ci;
 
 create table cung_duong (
 	id bigint not null primary key auto_increment,
@@ -134,4 +134,4 @@ create table cung_duong (
     ar_user smallint not null default 3,
     ar_group smallint not null default 1,
     ar_other smallint not null default 0
-) CHARSET utf8 COLLATE utf8_vietnamese_ci;
+) CHARSET utf8 COLLATE utf8_general_ci;

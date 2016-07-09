@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM ubuntu:12.04
 
 MAINTAINER https://github.com/quan-na
 
@@ -23,13 +23,12 @@ RUN echo "    <Directory \"/src/quan_ly_cung_duong/public/\">"      >> /etc/apac
 RUN echo "        Order allow,deny"                                 >> /etc/apache2/sites-available/001-qlcd.conf
 RUN echo "        AllowOverride All"                                >> /etc/apache2/sites-available/001-qlcd.conf
 RUN echo "        Allow from all"                                   >> /etc/apache2/sites-available/001-qlcd.conf
-RUN echo "        Require all granted"                              >> /etc/apache2/sites-available/001-qlcd.conf
 RUN echo "    </Directory>"                                         >> /etc/apache2/sites-available/001-qlcd.conf
 RUN echo "</VirtualHost>"                                           >> /etc/apache2/sites-available/001-qlcd.conf
 
 RUN a2enmod rewrite
 RUN a2dissite 000-default
-RUN a2ensite 001-qlcd
+RUN a2ensite 001-qlcd.conf
 
 RUN sed -i -e "s/variables_order = \"GPCS\"/variables_order = \"EGPCS\"/g" /etc/php5/cli/php.ini
 RUN sed -i -e "s/variables_order = \"GPCS\"/variables_order = \"EGPCS\"/g" /etc/php5/apache2/php.ini

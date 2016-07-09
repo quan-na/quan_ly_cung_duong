@@ -2,10 +2,9 @@
     "name": "quan/quan_ly_cung_duong",
     "description": "ung dung quan ly cung duong",
     "require": {
-        "slim/slim": "^3.4",
+        "slim/slim": "~2.0",
         "monolog/monolog": "^1.19",
-        "slim/pdo": "^1.9",
-        "dflydev/fig-cookies": "^1.0"
+        "slim/pdo": "^1.9"
     },
     "license": "GPL",
     "authors": [

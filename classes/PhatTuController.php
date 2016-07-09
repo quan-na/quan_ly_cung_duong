@@ -1,49 +1,26 @@
 <?php
-use Interop\Container\ContainerInterface;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
 
 class PhatTuController {
-    protected $ci;
+    protected $app;
 
-    public function __construct(ContainerInterface $ci) {
-        $this->ci = $ci;
+    public function __construct(\Slim\Slim $app) {
+        $this->app = $app;
     }
 
-    public function phatTuList($request, $response, $args) {
+    public function phatTuList() {
         $returnObj = array();
-        $parsedBody = $request->getParsedBody();
-        $statement = $this->ci->db->select()->from('phat_tu')
+        $parsedBody = json_decode($this->app->request()->getBody());
+        $statement = $this->app->db->select()->from('phat_tu')
                           ->limit($parsedBody['rowCount'],
-                                  $parsedBody['rowCount']*($parsedBody['current'] - 1));
-        if (!empty($parsedBody['sort']))
-            foreach ($parsedBody['sort'] as $key => $direction)
+                                  $parsedBody['rowCount'] * ($parsedBody['current'] - 1));
+        if (!empty($parsedBody->sort))
+            foreach ($parsedBody->sort as $key => $direction)
                 $statement->orderBy($key, $direction);
-        $countStatement = $this->ci->db->select(array('COUNT(id)'))->from('phat_tu');
+        $countStatement = $this->app->db->select(array('COUNT(id)'))->from('phat_tu');
         // filter by keyword
         if (!empty($parsedBody['searchPhrase'])) {
             $statement->where("CONCAT('#',id,'#',CONCAT_WS(',',name,phap_danh,phone,email))", 'LIKE', '%' . str_replace(' ', '%', $parsedBody['searchPhrase']) . '%');
             $countStatement->where("CONCAT('#',id,'#',CONCAT_WS(',',id,name,phap_danh,phone,email))", 'LIKE', '%' . str_replace(' ', '%', $parsedBody['searchPhrase']) . '%');
-        }
-        // TODO filter by permission
-        // filter with form
-        if (!empty($parsedBody['searchForm'])) {
-            if (!empty($parsedBody['searchForm']['name'])) {
-                $statement->where('name', 'LIKE', '%' . $parsedBody['searchForm']['name'] . '%');
-                $countStatement->where('name', 'LIKE', '%' . $parsedBody['searchForm']['name'] . '%');
-            }
-            if (!empty($parsedBody['searchForm']['phap_danh'])) {
-                $statement->where('phap_danh', 'LIKE', '%' . $parsedBody['searchForm']['phap_danh'] . '%');
-                $countStatement->where('phap_danh', 'LIKE', '%' . $parsedBody['searchForm']['phap_danh'] . '%');
-            }
-            if (!empty($parsedBody['searchForm']['email'])) {
-                $statement->where('email', 'LIKE', '%' . $parsedBody['searchForm']['email'] . '%');
-                $countStatement->where('email', 'LIKE', '%' . $parsedBody['searchForm']['email'] . '%');
-            }
-            if (!empty($parsedBody['searchForm']['phone'])) {
-                $statement->where('phone', 'LIKE', '%' . $parsedBody['searchForm']['phone'] . '%');
-                $countStatement->where('phone', 'LIKE', '%' . $parsedBody['searchForm']['phone'] . '%');
-            }
         }
         $pdoStatement = $statement->execute();
         $countPdoStatement = $countStatement->execute();
@@ -53,64 +30,68 @@ class PhatTuController {
         $returnObj['rowCount'] = $parsedBody['rowCount'];
         $returnObj['total'] = $total[0];
         $returnObj['rows'] = $phatTuArray;
-        return $response->withJson($returnObj);
+        $this->app->response()->status(200);
+        $this->app->response()->body(json_encode($returnObj));
     }
 
-    public function phatTuDelete($request, $response, $args) {
+    public function phatTuDelete() {
         $returnObj = array();
-        $parsedBody = $request->getParsedBody();
-        $this->ci->logger->addInfo('--- Phat tu delete request received : ' . json_encode($parsedBody));
+        $parsedBody = json_decode($this->app->request()->getBody());
+        $this->app->logger->addInfo('--- Phat tu delete request received : ' . json_encode($parsedBody));
         // TODO validate
-        $deleteStatement = $this->ci->db->delete()
+        $deleteStatement = $this->app->db->delete()
                                 ->from('phat_tu')
-                                ->where('id','=',$parsedBody['id']);
+                                ->where('id','=',$parsedBody->id);
         $returnObj['rows'] = $deleteStatement->execute();
-        return $response->withJson($returnObj);
+        $this->app->response()->status(200);
+        $this->app->response()->body(json_encode($returnObj));
     }
 
-    public function phatTuGet($request, $response, $args) {
-        $parsedBody = $request->getParsedBody();
-        $statement = $this->ci->db->select()->from('phat_tu')
-                          ->where('id', '=', $parsedBody['id']);
+    public function phatTuGet() {
+        $parsedBody = json_decode($this->app->request()->getBody());
+        $statement = $this->app->db->select()->from('phat_tu')
+                          ->where('id', '=', $parsedBody->id);
         $pdoStatement = $statement->execute();
         $phatTu = $pdoStatement->fetch(PDO::FETCH_OBJ);
-        return $response->withJson($phatTu);
+        $this->app->response()->status(200);
+        $this->app->response()->body(json_encode($phatTu));
     }
 
-    public function phatTuSave($request, $response, $args) {
+    public function phatTuSave() {
         $returnObj = array();
-        $parsedBody = $request->getParsedBody();
-        $this->ci->logger->addInfo('--- Phat tu save request received : ' . json_encode($parsedBody));
+        $parsedBody = json_decode($this->app->request()->getBody());
+        $this->app->logger->addInfo('--- Phat tu save request received : ' . json_encode($parsedBody));
         // validate
-        if (!($parsedBody['name'] or $parsedBody['phap_danh'])) {
+        if (!($parsedBody->name or $parsedBody->phap_danh)) {
             $returnObj['result'] = 'error';
             $returnObj['message'] = 'Name or Phap danh is required.';
         } else {
-            if (0 > $parsedBody['id']) {
-                $insertStatement = $this->ci->db->insert(array('name', 'phap_danh', 'phone', 'email',
+            if (0 > $parsedBody->id) {
+                $insertStatement = $this->app->db->insert(array('name', 'phap_danh', 'phone', 'email',
                                                                'ar_owner', 'ar_group_level', 'ar_user', 'ar_group', 'ar_other'))
                                         ->into('phat_tu')
-                                        ->values(array($parsedBody['name'],
-                                                       $parsedBody['phap_danh'],
-                                                       $parsedBody['phone'],
-                                                       $parsedBody['email'],
+                                        ->values(array($parsedBody->name,
+                                                       $parsedBody->phap_danh,
+                                                       $parsedBody->phone,
+                                                       $parsedBody->email,
                                                        $_SESSION['username'], $_SESSION['group_level'], 3, 2, 0));
                 $insertId = $insertStatement->execute(false);
                 $returnObj['result'] = 'ok';
                 $returnObj['id'] = $insertId;
             } else {
-                $updateStatement = $this->ci->db->update(array('name' => $parsedBody['name'],
-                                                               'phap_danh' => $parsedBody['phap_danh'],
-                                                               'phone' => $parsedBody['phone'],
-                                                               'email' => $parsedBody['email']))
+                $updateStatement = $this->app->db->update(array('name' => $parsedBody->name,
+                                                               'phap_danh' => $parsedBody->phap_danh,
+                                                               'phone' => $parsedBody->phone,
+                                                               'email' => $parsedBody->email))
                                         ->table('phat_tu')
-                                        ->where('id', '=', $parsedBody['id']);
+                                        ->where('id', '=', $parsedBody->id);
                 $rows = $updateStatement->execute();
                 $returnObj['result'] = 'ok';
                 $returnObj['rows'] = $rows;
             }
         }
-        return $response->withJson($returnObj);
+        $this->app->response()->status(200);
+        $this->app->response()->body(json_encode($returnObj));
     }
 }
 ?>

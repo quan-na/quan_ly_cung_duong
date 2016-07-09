@@ -1,17 +1,14 @@
 <?php
-use Interop\Container\ContainerInterface;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
 
 class MenuController {
-    protected $ci;
+    protected $app;
 
-    public function __construct(ContainerInterface $ci) {
-        $this->ci = $ci;
+    public function __construct(\Slim\Slim $app) {
+        $this->app = $app;
     }
 
-    public function menuList($request, $response, $args) {
-        $statement = $this->ci->db->select()->from('menu_item')
+    public function menuList() {
+        $statement = $this->app->db->select()->from('menu_item')
                           ->where('ar_owner', '=', $_SESSION['username'])
                           ->where('ar_user', '>', 0, "OR")
                           ->where('ar_group_level', '>=', $_SESSION['group_level'])
@@ -32,7 +29,8 @@ class MenuController {
                 $sortedArray[$menuObj->parent_menu]->subMenus[$menuObj->menu_id] = $menuObj;
             }
         }
-        return $response->withJson($sortedArray);
+        $this->app->response()->status(200);
+        $this->app->response()->body(json_encode($sortedArray));
     }
 }
 ?>
