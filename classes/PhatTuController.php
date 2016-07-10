@@ -11,8 +11,8 @@ class PhatTuController {
         $returnObj = array();
         $parsedBody = $this->app->request()->post();
         $statement = $this->app->db->select()->from('phat_tu')
-                          ->limit($parsedBody['rowCount'],
-                                  $parsedBody['rowCount'] * ($parsedBody['current'] - 1));
+                          ->limit((int)$parsedBody['rowCount'],
+                                  (int)$parsedBody['rowCount'] * ((int)$parsedBody['current'] - 1));
         if (!empty($parsedBody['sort']))
             foreach ($parsedBody['sort'] as $key => $direction)
                 $statement->orderBy($key, $direction);

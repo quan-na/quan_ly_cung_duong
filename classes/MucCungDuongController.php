@@ -12,8 +12,8 @@ class MucCungDuongController {
         $parsedBody = $this->app->request->post();
         $statement = $this->app->db->select()->from('muc_cung_duong');
         if (isset($parsedBody['rowCount']) and isset($parsedBody['current']))
-            $statement->limit($parsedBody['rowCount'],
-                              $parsedBody['rowCount']*($parsedBody['current'] - 1));
+            $statement->limit((int)$parsedBody['rowCount'],
+                              (int)$parsedBody['rowCount']*((int)$parsedBody['current'] - 1));
         if (!empty($parsedBody['sort']))
             foreach ($parsedBody['sort'] as $key => $direction)
         $statement->orderBy($key, $direction);

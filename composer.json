@@ -4,7 +4,7 @@
     "require": {
         "slim/slim": "~2.0",
         "monolog/monolog": "^1.19",
-        "slim/pdo": "^1.9"
+        "slim/pdo": "~1.9"
     },
     "license": "GPL",
     "authors": [
