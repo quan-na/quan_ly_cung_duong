@@ -21,8 +21,8 @@ class CungDuongController {
                           ->from('cung_duong')
                           ->join('phat_tu', 'cung_duong.phat_tu_id', '=', 'phat_tu.id')
                           ->join('muc_cung_duong', 'cung_duong.muc_cung_duong_id', '=', 'muc_cung_duong.id')
-                          ->limit($parsedBody['rowCount'],
-                                  $parsedBody['rowCount']*($parsedBody['current'] - 1));
+                          ->limit((int)$parsedBody['rowCount'],
+                                  (int)$parsedBody['rowCount']*((int)$parsedBody['current'] - 1));
         if (!empty($parsedBody['sort']))
             foreach ($parsedBody['sort'] as $key => $direction)
         $statement->orderBy($key, $direction);
