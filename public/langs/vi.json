@@ -88,7 +88,14 @@
       "Print":"In ra máy",
       "Sum cung duong":"Tổng cúng dường",
       "From date must be before To date.":"Xin nhập Từ ngày trước Tới ngày",
-      "Please input Minimum qui doi as number.":"Xin nhập Tiền qui đổi trên mức là một số."
+      "Please input Minimum qui doi as number.":"Xin nhập Tiền qui đổi trên mức là một số.",
+    "__8":"Data grid",
+      "All":"Tất cả",
+      "Showing {{ctx.start}} to {{ctx.end}} of {{ctx.total}} entries":"Đang hiện từ {{ctx.start}} tới {{ctx.end}} trong tất cả {{ctx.total}} mục",
+      "Loading...":"Đang tải...",
+      "No results found!":"Không tìm thấy mục nào!",
+      "Refresh":"Tải lại",
+      "Search":"Tìm kiếm"
 	},
 	"regex": []
 }

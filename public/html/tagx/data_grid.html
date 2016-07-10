@@ -10,8 +10,8 @@
        if (typeof(options.identifier) == 'string')
            idColKey = options.identifier;
        // load header
-       // TODO translate headers
        // TODO translate 'no items' message
+       /*  */
        if (typeof(options.headerObj) == 'object')
            $.each(options.headerObj, function(idx, val) {
                if (idx == idColKey)
@@ -21,7 +21,16 @@
            });
        // TODO header url
        // Load data
-       var gridOptions = {};
+       var gridOptions = {
+           labels: {
+               all: globalControl.lang.translate("All"),
+               infos: globalControl.lang.translate("Showing {{ctx.start}} to {{ctx.end}} of {{ctx.total}} entries"),
+               loading: globalControl.lang.translate("Loading..."),
+               noResults: globalControl.lang.translate("No results found!"),
+               refresh: globalControl.lang.translate("Refresh"),
+               search: globalControl.lang.translate("Search")
+           }
+       };
        if (options.selection == 'multi') {
            gridOptions.selection = true;
            gridOptions.multiSelect = true;
