@@ -8,6 +8,8 @@
 		  "Sign in":"Đăng nhập",
       "QLCD":"Quản lý cúng dường",
       "#":"#",
+      "Please input your username and password.":"Xin hãy nhập tên đăng nhập và mật khẩu.",
+      "Wrong username or password.":"Sai tên đăng nhập hoặc sai mật khẩu.",
     "__2":"Menu",
       "Cung duong":"Cúng dường",
       "User":"Người dùng",
