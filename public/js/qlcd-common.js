@@ -42,7 +42,7 @@ var globalControl = (function () {
             $.ajax({
                 'url':url,
                 type: "GET",
-                cache: false,
+                // cache: false,
                 dataType: "text",
                 success: function(data) {
                     var splitData = data.split("===to-lead-people_walk-behind-them===");
